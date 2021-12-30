@@ -40,3 +40,7 @@ go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
 ### JetBrains IDEs
 
 - You can use the [run configuration file](.run/Tests.run.xml) to run tests
+
+## Developing
+
+See [Code Structure](./code-structure.md) for more details
