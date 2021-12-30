@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tests" type="GoTestRunConfiguration" factoryName="Go Test">
+    <module name="arka" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CI" value="ENABLED" />
+    </envs>
+    <kind value="DIRECTORY" />
+    <package value="github.com/adwitiyaio/arka" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <method v="2" />
+  </configuration>
+</component>

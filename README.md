@@ -19,6 +19,24 @@ This is the next generation backend platform similar to parse built with the fol
 
 Create a copy of `sample.env` as `test.env` and fill in the appropriate values to run tests
 
+## Testing
+
+### Command Line (Coverage)
+
+```shell
+go test -v ./...
+```
+
+### Command Line (Coverage)
+
+```shell
+go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
+```
+
+### Visual Studio Code
+
+- You can use the built in `Test Explorer` panel to run tests. 
+
 ### JetBrains IDEs
 
 - You can use the [run configuration file](.run/Tests.run.xml) to run tests
