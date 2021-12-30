@@ -56,7 +56,6 @@ jobs:
         # Create a test.env file for running tests
         run: |
           echo ${{ secrets.FIREBASE_MESSAGING_CONFIG }} > ${{ secrets.FIREBASE_MESSAGING_CONFIG_PATH }}
-          cat /tmp/firebase-messaging.json
           cat <<EOT >> test.env
           CI=${CI}
           
