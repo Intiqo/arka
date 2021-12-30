@@ -1,0 +1,148 @@
+name: Tests
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13.1
+        env:
+          # must specify password for PG Docker container image, see: https://registry.hub.docker.com/_/postgres?tab=description&page=1&name=10
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_HOST_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Setup Go
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.5' # The Go version to download (if necessary) and use.
+
+      # Integration Tests
+      - name: Integration Tests
+        # Create a test.env file for running tests
+        run: |
+          cat <<EOT >> test.env
+          CI=${CI}
+          
+          APP_NAME=App
+          
+          DB_HOST=${DB_HOST}
+          DB_PORT=${DB_PORT}
+          DB_DATABASE=${DB_DATABASE}
+          DB_USER=${DB_USER}
+          DB_PASSWORD=${DB_PASSWORD}
+          
+          MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
+          MAILGUN_HOST=${MAILGUN_HOST}
+          MAILGUN_API_KEY=${MAILGUN_HOST}
+          
+          REDIS_HOST=${REDIS_HOST}
+          REDIS_PORT=${REDIS_PORT}
+          REDIS_PASSWORD=${REDIS_PASSWORD}
+          REDIS_DATABASE=2
+          
+          AWS_REGION=${AWS_REGION}
+          AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+          AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+          AWS_STORAGE_BUCKET=${AWS_STORAGE_BUCKET}
+          
+          CLICKSEND_USERNAME=${CLICKSEND_USERNAME}
+          CLICKSEND_API_KEY=${CLICKSEND_API_KEY}
+          
+          SMSBROADCAST_USERNAME=${SMSBROADCAST_USERNAME}
+          SMSBROADCAST_PASSWORD=${SMSBROADCAST_PASSWORD}
+          
+          FIREBASE_DEEPLINK_API_KEY=${FIREBASE_API_KEY}
+          FIREBASE_DEEPLINK_SHORT_LINKS_URL=${FIREBASE_DEEPLINK_SHORT_LINKS_URL}
+          FIREBASE_DEEPLINK_DYNAMIC_LINK_DOMAIN=${FIREBASE_DEEPLINK_DYNAMIC_LINK_DOMAIN}
+          FIREBASE_DEEPLINK_ANDROID_PACKAGE_NAME=${FIREBASE_DEEPLINK_ANDROID_PACKAGE_NAME}
+          FIREBASE_DEEPLINK_IOS_BUNDLE_ID=${FIREBASE_DEEPLINK_IOS_BUNDLE_ID}
+          FIREBASE_DEEPLINK_IOS_STORE_ID=${FIREBASE_DEEPLINK_IOS_STORE_ID}
+          FIREBASE_DEEPLINK_SOCIAL_TITLE=${FIREBASE_DEEPLINK_SOCIAL_TITLE}
+          FIREBASE_DEEPLINK_SOCIAL_DESCRIPTION=${FIREBASE_DEEPLINK_SOCIAL_DESCRIPTION}
+          FIREBASE_DEEPLINK_SOCIAL_IMAGE_URL=${FIREBASE_DEEPLINK_SOCIAL_IMAGE_URL}
+          
+          STRIPE_TOKEN=${STRIPE_TOKEN}
+          
+          KUTT_API_URL=${KUTT_API_URL}
+          KUTT_API_KEY=${KUTT_API_KEY}
+          
+          NOTIFICATIONS_DISABLED=${NOTIFICATIONS_DISABLED}
+          
+          FIREBASE_MESSAGING_CONFIG=${FIREBASE_MESSAGING_CONFIG}
+          EOT
+
+          go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
+
+        env:
+          CI: true
+          CGO_ENABLED: 0
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
+          MAILGUN_HOST: ${{ secrets.MAILGUN_HOST }}
+          MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_DATABASE: ${{ secrets.REDIS_DATABASE }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_STORAGE_BUCKET: ${{ secrets.AWS_STORAGE_BUCKET }}
+          CLICKSEND_USERNAME: ${{ secrets.CLICKSEND_USERNAME }}
+          CLICKSEND_API_KEY: ${{ secrets.CLICKSEND_API_KEY }}
+          SMSBROADCAST_USERNAME: ${{ secrets.SMSBROADCAST_USERNAME }}
+          SMSBROADCAST_PASSWORD: ${{ secrets.SMSBROADCAST_PASSWORD }}
+          BITLY_TOKEN: ${{ secrets.BITLY_TOKEN }}
+          FIREBASE_DEEPLINK_API_KEY: ${{ secrets.FIREBASE_DEEPLINK_API_KEY }}
+          FIREBASE_DEEPLINK_SHORT_LINKS_URL: ${{ secrets.FIREBASE_DEEPLINK_SHORT_LINKS_URL }}
+          FIREBASE_DEEPLINK_DYNAMIC_LINK_DOMAIN: ${{ secrets.FIREBASE_DEEPLINK_DYNAMIC_LINK_DOMAIN }}
+          FIREBASE_DEEPLINK_ANDROID_PACKAGE_NAME: ${{ secrets.FIREBASE_DEEPLINK_ANDROID_PACKAGE_NAME }}
+          FIREBASE_DEEPLINK_IOS_BUNDLE_ID: ${{ secrets.FIREBASE_DEEPLINK_IOS_BUNDLE_ID }}
+          FIREBASE_DEEPLINK_IOS_STORE_ID: ${{ secrets.FIREBASE_DEEPLINK_IOS_STORE_ID }}
+          FIREBASE_DEEPLINK_SOCIAL_TITLE: ${{ secrets.FIREBASE_DEEPLINK_SOCIAL_TITLE }}
+          FIREBASE_DEEPLINK_SOCIAL_DESCRIPTION: ${{ secrets.FIREBASE_DEEPLINK_SOCIAL_DESCRIPTION }}
+          FIREBASE_DEEPLINK_SOCIAL_IMAGE_URL: ${{ secrets.FIREBASE_DEEPLINK_SOCIAL_IMAGE_URL }}
+          STRIPE_TOKEN: ${{ secrets.STRIPE_TOKEN }}
+          KUTT_API_URL: ${{ secrets.KUTT_API_URL }}
+          KUTT_API_KEY: ${{ secrets.KUTT_API_KEY }}
+          NOTIFICATIONS_DISABLED: ${{ secrets.NOTIFICATIONS_DISABLED }}
+          FIREBASE_MESSAGING_CONFIG: ${{ secrets.FIREBASE_MESSAGING_CONFIG }}

@@ -1,0 +1,48 @@
+package util
+
+import (
+	"os"
+	"testing"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
+)
+
+type UrlManagerTestSuite struct {
+	suite.Suite
+
+	m UrlManager
+}
+
+func TestUrlManager(t *testing.T) {
+	suite.Run(t, new(UrlManagerTestSuite))
+}
+
+func (ts *UrlManagerTestSuite) SetupSuite() {
+	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	err := os.Setenv("CI", "true")
+	require.NoError(ts.T(), err)
+	BootstrapUrlManager(UrlProviderKutt)
+	ts.m = dependency.GetManager().Get(DependencyUrlManager).(UrlManager)
+}
+
+func (ts *UrlManagerTestSuite) Test_multiUrlShortener_Shorten() {
+	ts.Run("success - shorten url", func() {
+		res, err := ts.m.Shorten(gofakeit.URL())
+		assert.NoError(ts.T(), err)
+		assert.NotNil(ts.T(), res)
+	})
+}
+
+func (ts *UrlManagerTestSuite) Test_multiUrlShortener_CreateDeepLink() {
+	ts.Run("success", func() {
+		res, err := ts.m.CreateDeepLink(gofakeit.URL())
+		assert.NoError(ts.T(), err)
+		assert.NotNil(ts.T(), res)
+	})
+}
