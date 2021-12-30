@@ -4,14 +4,12 @@ import (
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
-	"fmt"
-	"google.golang.org/api/option"
-
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"google.golang.org/api/option"
 )
 
-const messagingFirebaseConfig = "FIREBASE_MESSAGING_CONFIG"
+const messagingFirebaseConfigPath = "FIREBASE_MESSAGING_CONFIG_PATH"
 
 type firebaseManager struct {
 	cm     config.Manager
@@ -19,9 +17,8 @@ type firebaseManager struct {
 }
 
 func (f *firebaseManager) initialize() {
-	fbConfig := f.cm.GetValueForKey(messagingFirebaseConfig)
-	fmt.Println(fbConfig)
-	opt := option.WithCredentialsJSON([]byte(fbConfig))
+	fbConfigPath := f.cm.GetValueForKey(messagingFirebaseConfigPath)
+	opt := option.WithCredentialsFile(fbConfigPath)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		logger.Log.Fatal().Err(err).Msg("failed to initialize firebase app")

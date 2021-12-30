@@ -55,6 +55,7 @@ jobs:
       - name: Integration Tests
         # Create a test.env file for running tests
         run: |
+          echo ${{ secrets.FIREBASE_MESSAGING_CONFIG }} > ${{ secrets.FIREBASE_MESSAGING_CONFIG_PATH }}
           cat <<EOT >> test.env
           CI=${CI}
           
@@ -103,7 +104,7 @@ jobs:
           
           NOTIFICATIONS_DISABLED=${NOTIFICATIONS_DISABLED}
           
-          FIREBASE_MESSAGING_CONFIG=${FIREBASE_MESSAGING_CONFIG}
+          FIREBASE_MESSAGING_CONFIG_PATH=${FIREBASE_MESSAGING_CONFIG_PATH}
           EOT
 
           go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
@@ -145,3 +146,4 @@ jobs:
           KUTT_API_KEY: ${{ secrets.KUTT_API_KEY }}
           NOTIFICATIONS_DISABLED: ${{ secrets.NOTIFICATIONS_DISABLED }}
           FIREBASE_MESSAGING_CONFIG: ${{ secrets.FIREBASE_MESSAGING_CONFIG }}
+          FIREBASE_MESSAGING_CONFIG_PATH: ${{ secrets.FIREBASE_MESSAGING_CONFIG_PATH }}
