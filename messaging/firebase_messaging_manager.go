@@ -4,6 +4,7 @@ import (
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
+	"fmt"
 	"google.golang.org/api/option"
 
 	"github.com/adwitiyaio/arka/config"
@@ -19,6 +20,7 @@ type firebaseManager struct {
 
 func (f *firebaseManager) initialize() {
 	fbConfig := f.cm.GetValueForKey(messagingFirebaseConfig)
+	fmt.Println(fbConfig)
 	opt := option.WithCredentialsJSON([]byte(fbConfig))
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
