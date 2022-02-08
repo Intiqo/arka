@@ -1,14 +1,16 @@
 package messaging
 
 import (
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
+	"os"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"testing"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
 )
 
 type FirebaseMessagingManagerTestSuite struct {
@@ -29,7 +31,7 @@ func (ts *FirebaseMessagingManagerTestSuite) SetupSuite() {
 	ts.m = dependency.GetManager().Get(DependencyMessagingManager).(Manager)
 }
 
-func (ts FirebaseMessagingManagerTestSuite) Test_mailgunManager_SendNotification() {
+func (ts FirebaseMessagingManagerTestSuite) Test_firebaseMessagingManager_SendNotification() {
 	ts.Run("success - invalid tokens", func() {
 		message := Message{
 			Title:    gofakeit.JobTitle(),

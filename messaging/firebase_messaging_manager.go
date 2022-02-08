@@ -2,11 +2,13 @@ package messaging
 
 import (
 	"context"
+
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
+	"google.golang.org/api/option"
+
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
-	"google.golang.org/api/option"
 )
 
 const messagingFirebaseConfigPath = "FIREBASE_MESSAGING_CONFIG_PATH"
