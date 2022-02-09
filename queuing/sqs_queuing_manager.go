@@ -85,8 +85,9 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 			continue
 		}
 		response.Messages = append(response.Messages, MessageResponse{
-			Data:    data,
-			Receipt: *message.ReceiptHandle,
+			MessageId: *message.MessageId,
+			Data:      data,
+			Receipt:   *message.ReceiptHandle,
 		})
 	}
 

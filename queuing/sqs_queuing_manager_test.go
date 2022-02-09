@@ -61,6 +61,8 @@ func (ts *SqsManagerTestSuite) Test_sqsManager_SendReceiveAndDeleteMessage() {
 			dataMap := msg.Data.(map[string]interface{})
 			err = mapstructure.Decode(dataMap, &messageData)
 			require.NoError(ts.T(), err)
+			assert.NotEmpty(ts.T(), msg.MessageId)
+			assert.NotEmpty(ts.T(), msg.Receipt)
 			assert.Equal(ts.T(), data.Message, messageData.Message)
 			logger.Log.Info().Msgf("data: %v", messageData)
 			err = ts.m.DeleteMessage(DeleteOptions{

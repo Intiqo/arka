@@ -30,8 +30,9 @@ type ReceiveOptions struct {
 }
 
 type MessageResponse struct {
-	Data    interface{}
-	Receipt string
+	MessageId string
+	Data      interface{}
+	Receipt   string
 }
 
 type ReceiveResponse struct {
