@@ -63,10 +63,32 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 		return response, err
 	}
 
+	if options.WaitTimeSeconds < 1 {
+		options.WaitTimeSeconds = 1
+	}
+	if options.WaitTimeSeconds > 20 {
+		options.WaitTimeSeconds = 20
+	}
+
+	if options.DelayTimeout == 0 {
+		options.DelayTimeout = 20
+	}
+	if options.DelayTimeout < 5 {
+		options.DelayTimeout = 5
+	}
+
+	if options.NumberOfMessages < 1 {
+		options.NumberOfMessages = 1
+	}
+	if options.NumberOfMessages > 10 {
+		options.NumberOfMessages = 10
+	}
+
 	result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 		QueueUrl:            queueUrl.QueueUrl,
 		MaxNumberOfMessages: aws.Int64(options.NumberOfMessages),
 		VisibilityTimeout:   aws.Int64(options.DelayTimeout),
+		WaitTimeSeconds:     aws.Int64(options.WaitTimeSeconds),
 	})
 	if err != nil {
 		return response, err

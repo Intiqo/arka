@@ -54,6 +54,7 @@ func (ts *SqsManagerTestSuite) Test_sqsManager_SendReceiveAndDeleteMessage() {
 			Options:          Options{QueueName: queueName},
 			DelayTimeout:     30,
 			NumberOfMessages: 1,
+			WaitTimeSeconds:  5,
 		})
 		require.NoError(ts.T(), err)
 		for _, msg := range result.Messages {

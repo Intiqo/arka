@@ -26,6 +26,7 @@ type SendOptions struct {
 type ReceiveOptions struct {
 	Options
 	DelayTimeout     int64
+	WaitTimeSeconds  int64
 	NumberOfMessages int64
 }
 
