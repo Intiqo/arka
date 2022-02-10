@@ -23,7 +23,7 @@ type Options struct {
 	To             []string
 	Cc             []string
 	Bcc            []string
-	Attachment     string
+	Attachments    []string
 	ReplyToAddress string
 }
 

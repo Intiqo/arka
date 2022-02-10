@@ -10,7 +10,6 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gofrs/uuid v4.2.0+incompatible
-	github.com/google/uuid v1.3.0
 	github.com/jackc/pgconn v1.10.0
 	github.com/joho/godotenv v1.3.0
 	github.com/mailgun/mailgun-go/v4 v4.5.1
@@ -22,6 +21,7 @@ require (
 	github.com/stripe/stripe-go/v72 v72.51.0
 	github.com/xuri/excelize/v2 v2.4.1
 	google.golang.org/api v0.40.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/postgres v1.1.1
 	gorm.io/gorm v1.21.15
 )
@@ -74,6 +74,7 @@ require (
 	google.golang.org/genproto v0.0.0-20210222152913-aa3ee6e6a81c // indirect
 	google.golang.org/grpc v1.35.0 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect

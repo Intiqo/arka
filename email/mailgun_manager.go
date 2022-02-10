@@ -48,12 +48,14 @@ func (m *mailgunManager) SendEmail(options Options) error {
 	}
 
 	message.SetHtml(options.Html)
+	if len(options.Attachments) > 0 {
+		for _, attachment := range options.Attachments {
+			message.AddAttachment(attachment)
+		}
+	}
 	message.SetTracking(true)
 	message.SetTrackingClicks(true)
 	message.SetTrackingOpens(true)
-	if options.Attachment != "" {
-		message.AddAttachment(options.Attachment)
-	}
 
 	return m.dispatch(message, options)
 }

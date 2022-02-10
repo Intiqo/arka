@@ -35,6 +35,25 @@ func (ts *SesManagerTestSuite) SetupSuite() {
 }
 
 func (ts SesManagerTestSuite) Test_sesManager_SendEmail() {
+	ts.Run("recipient limit", func() {
+		var to []string
+		for i := 0; i <= 1001; i++ {
+			to = append(to, gofakeit.Email())
+		}
+		options := Options{
+			Sender:  gofakeit.Email(),
+			Subject: "Integration Testing",
+			Html:    "<body>Hello</body>",
+			Text:    "Hello",
+			To:      to,
+			Cc:      []string{gofakeit.Email()},
+			Bcc:     []string{gofakeit.Email()},
+		}
+
+		err := ts.m.SendEmail(options)
+		assert.NoError(ts.T(), err)
+	})
+
 	ts.Run("success", func() {
 		options := Options{
 			Sender:  gofakeit.Email(),
@@ -50,19 +69,16 @@ func (ts SesManagerTestSuite) Test_sesManager_SendEmail() {
 		assert.NoError(ts.T(), err)
 	})
 
-	ts.Run("recipient limit", func() {
-		var to []string
-		for i := 0; i <= 1001; i++ {
-			to = append(to, gofakeit.Email())
-		}
+	ts.Run("success - with attachments", func() {
 		options := Options{
-			Sender:  gofakeit.Email(),
-			Subject: "Integration Testing",
-			Html:    "<body>Hello</body>",
-			Text:    "Hello",
-			To:      to,
-			Cc:      []string{gofakeit.Email()},
-			Bcc:     []string{gofakeit.Email()},
+			Sender:      gofakeit.Email(),
+			Subject:     "Integration Testing",
+			Html:        "<body>Hello</body>",
+			Text:        "Hello",
+			To:          []string{gofakeit.Email(), gofakeit.Name()},
+			Cc:          []string{gofakeit.Email()},
+			Bcc:         []string{gofakeit.Email()},
+			Attachments: []string{"./testdata/sample.txt"},
 		}
 
 		err := ts.m.SendEmail(options)
