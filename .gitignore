@@ -374,3 +374,5 @@ bin
 .env
 test.env
 firebase-messaging.json
+main.go
+hello.txt

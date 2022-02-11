@@ -2,24 +2,31 @@ package template
 
 import (
 	"bytes"
-	"html/template"
+	ht "html/template"
+	tt "text/template"
 )
 
 type systemTemplateManager struct{}
 
 func (m systemTemplateManager) CreateTemplate(ctx string, t string, data interface{}, html bool) (string, error) {
-	tp, err := template.New(ctx).Parse(t)
+	var templateWithData bytes.Buffer
+	if !html {
+		ttp, err := tt.New(ctx).Parse(t)
+		if err != nil {
+			return "", err
+		}
+		err = ttp.ExecuteTemplate(&templateWithData, ctx, data)
+		if err != nil {
+			return "", err
+		}
+		return templateWithData.String(), nil
+	}
+
+	tp, err := ht.New(ctx).Parse(t)
 	if err != nil {
 		return "", err
 	}
-
-	var templateWithData bytes.Buffer
-	if html {
-		err = tp.ExecuteTemplate(&templateWithData, ctx, data)
-	} else {
-		err = tp.Execute(&templateWithData, data)
-	}
-
+	err = tp.ExecuteTemplate(&templateWithData, ctx, data)
 	if err != nil {
 		return "", err
 	}
