@@ -28,6 +28,8 @@ type AppUtil interface {
 
 	// ParseStringForTime ... Parse string into time.RFC3339 format
 	ParseStringForTime(date string) (time.Time, error)
+	//FormatDate ... Format date to get day of month with suffix
+	FormatDate(t time.Time) string
 	// IsTimeExpired ... Validate if the specified time has expired based on the current time
 	IsTimeExpired(t time.Time) bool
 }
@@ -93,4 +95,17 @@ func (as *simpleAppUtil) IsTimeExpired(t time.Time) bool {
 		return false
 	}
 	return true
+}
+
+func (as *simpleAppUtil) FormatDate(t time.Time) string {
+	suffix := "th"
+	switch t.Day() {
+	case 1, 21, 31:
+		suffix = "st"
+	case 2, 22:
+		suffix = "nd"
+	case 3, 23:
+		suffix = "rd"
+	}
+	return t.Format("2" + suffix + " Jan")
 }

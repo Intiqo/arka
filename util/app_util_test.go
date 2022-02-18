@@ -119,3 +119,10 @@ func (ts *AppUtilTestSuite) Test_simpleAppUtil_IsTimeExpired() {
 		assert.Equal(ts.T(), false, result)
 	})
 }
+
+func (ts *AppUtilTestSuite) Test_simpleAppUtil_FormatDate() {
+	ts.Run("success", func() {
+		date := ts.a.FormatDate(time.Now())
+		assert.NotNil(ts.T(), date)
+	})
+}
