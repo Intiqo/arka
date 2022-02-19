@@ -97,7 +97,7 @@ func (as *simpleAppUtil) IsTimeExpired(t time.Time) bool {
 	return true
 }
 
-func (as *simpleAppUtil) FormatDate(t time.Time) string {
+func (as simpleAppUtil) FormatDate(t time.Time) string {
 	suffix := "th"
 	switch t.Day() {
 	case 1, 21, 31:
