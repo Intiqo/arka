@@ -5,6 +5,8 @@ import (
 	"math"
 	"unicode/utf8"
 
+	"github.com/nyaruka/phonenumbers"
+
 	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
@@ -62,6 +64,10 @@ func Bootstrap(provider string) {
 		logger.Log.Fatal().Err(err).Str("provider", provider)
 	}
 	dm.Register(DependencySmsManager, smsManager)
+}
+
+func ParsePhoneNumber(mobileNumber string) (*phonenumbers.PhoneNumber, error) {
+	return phonenumbers.Parse(mobileNumber, "")
 }
 
 func GetCharacterCountForMessage(message string) int {

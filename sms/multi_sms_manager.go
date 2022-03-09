@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/nyaruka/phonenumbers"
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
@@ -47,7 +46,7 @@ func (msm multiSmsManager) SendSms(options Options) error {
 func segregateRecipients(recipients []string, code string) []string {
 	to := make([]string, 0)
 	for _, recipient := range recipients {
-		num, err := phonenumbers.Parse(recipient, "")
+		num, err := ParsePhoneNumber(recipient)
 		if err != nil {
 			logger.Log.Debug().Err(err).Msgf("failed to parse phone number, %s", recipient)
 			continue
