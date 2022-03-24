@@ -2,26 +2,48 @@ package monitoring
 
 import (
 	"os"
+	"strconv"
+	"strings"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
 
 	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/logger"
 )
 
-const appName = "APP_NAME"
-const newRelicLicense = "NEW_RELIC_LICENSE"
+const appNameKey = "APP_NAME"
+const newRelicLicenseKey = "NEW_RELIC_LICENSE"
+const enableMonitoringKey = "ENABLE_MONITORING"
 
 type newRelicManager struct {
 	cm config.Manager
+
+	app *newrelic.Application
 }
 
-func (c *newRelicManager) StartMonitoring() (*newrelic.Application, error) {
+func (c *newRelicManager) initialize() {
 	if os.Getenv("CI") == "true" {
-		return nil, nil
+		return
 	}
+	enabledMonitoringConfig := strings.TrimSpace(c.cm.GetValueForKey(enableMonitoringKey))
+	enableMonitoring, err := strconv.ParseBool(enabledMonitoringConfig)
+	if err != nil {
+		logger.Log.Error().Err(err).Msg("failed to parse new relic configuration")
+		return
+	}
+	if !enableMonitoring {
+		logger.Log.Error().Err(err).Msg("monitoring not enabled")
+		return
+	}
+	appName := strings.TrimSpace(c.cm.GetValueForKey(appNameKey))
+	license := strings.TrimSpace(c.cm.GetValueForKey(newRelicLicenseKey))
 	app, err := newrelic.NewApplication(
-		newrelic.ConfigAppName("colleago-next"),
-		newrelic.ConfigLicense("82889669f6821457cea3910f37ddfb605bd7NRAL"),
+		newrelic.ConfigAppName(appName),
+		newrelic.ConfigLicense(license),
 		newrelic.ConfigDistributedTracerEnabled(true))
-	return app, err
+	if err != nil {
+		logger.Log.Error().Err(err).Msg("failed to initialize new relic")
+		return
+	}
+	c.app = app
 }

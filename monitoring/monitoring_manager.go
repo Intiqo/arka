@@ -1,8 +1,6 @@
 package monitoring
 
 import (
-	"github.com/newrelic/go-agent/v3/newrelic"
-
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 )
@@ -11,20 +9,19 @@ const DependencyMonitoringManager = "monitoring_manager"
 
 const ProviderNewRelic = "new_relic"
 
-type Manager interface {
-	StartMonitoring() (*newrelic.Application, error)
-}
+type Manager interface{}
 
 // Bootstrap ... Bootstraps the schedule manager
 func Bootstrap(provider string) {
 	dm := dependency.GetManager()
 	d := dependency.GetManager()
-	var c interface{}
+	var nrm interface{}
 	switch provider {
 	case ProviderNewRelic:
-		c = &newRelicManager{
+		nrm = &newRelicManager{
 			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
 		}
+		nrm.(*newRelicManager).initialize()
 	}
-	d.Register(DependencyMonitoringManager, c)
+	d.Register(DependencyMonitoringManager, nrm)
 }

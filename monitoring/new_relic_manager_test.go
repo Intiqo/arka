@@ -3,7 +3,6 @@ package monitoring
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/adwitiyaio/arka/config"
@@ -28,7 +27,5 @@ func TestMonitoringManager(t *testing.T) {
 
 func (ts *MonitoringManagerTestSuite) Test_StartMonitoring() {
 	ts.Run("success", func() {
-		_, err := ts.mm.StartMonitoring()
-		require.NoError(ts.T(), err)
 	})
 }
