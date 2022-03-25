@@ -2,6 +2,7 @@ package sms
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"unicode/utf8"
 
@@ -68,6 +69,23 @@ func Bootstrap(provider string) {
 
 func ParsePhoneNumber(mobileNumber string) (*phonenumbers.PhoneNumber, error) {
 	return phonenumbers.Parse(mobileNumber, "")
+}
+
+// Normalizes a phone number by removing leading zeros
+// Returns the normalized phone number and the country code
+func NormalizePhoneNumber(phoneNumber string) (string, string) {
+	var countryCode string
+	var normalizedPhoneNumber string
+	// We need to normalise the phone number to remove any leading 0's
+	p, err := ParsePhoneNumber(phoneNumber)
+	if err == nil {
+		cc := p.GetCountryCode()
+		nationalNumber := p.GetNationalNumber()
+		normalizedPhoneNumber = fmt.Sprintf("+%d%d", cc, nationalNumber)
+		countryCode = fmt.Sprintf("+%d", cc)
+		return normalizedPhoneNumber, countryCode
+	}
+	return phoneNumber, countryCode
 }
 
 func GetCharacterCountForMessage(message string) int {
