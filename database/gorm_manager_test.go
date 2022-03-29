@@ -64,7 +64,7 @@ func (ts GormManagerSuite) Test_TranslateError() {
 	ts.Run("success - entity associated", func() {
 		pgErr := pgconn.PgError{Code: "23503"}
 		err := ts.gdm.TranslateError(&pgErr, "book")
-		const msg = "You cannot delete a [book] that is associated"
+		const msg = "Not deleted. [Book] is associated with other records."
 		assert.Equal(ts.T(), msg, err.Error())
 	})
 	ts.Run("success - unknown code", func() {

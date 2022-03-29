@@ -51,7 +51,7 @@ func (gdm gormDatabaseManager) TranslateError(err error, ent string) error {
 	if err, ok := err.(*pgconn.PgError); ok {
 		switch err.Code {
 		case entityAssociatedCode:
-			return exception.CreateAppException(ErrorEntityAssociated, ent)
+			return exception.CreateAppException(ErrorEntityAssociated, strings.Title(ent))
 		default:
 			return exception.CreateAppException(err.Message)
 		}
