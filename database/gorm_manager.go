@@ -17,7 +17,7 @@ import (
 	"github.com/adwitiyaio/arka/logger"
 )
 
-const ErrorEntityAssociated = `You cannot delete a %s that is associated`
+const ErrorEntityAssociated = `Not deleted. %s is associated with other records.`
 
 type gormDatabaseManager struct {
 	cm config.Manager
