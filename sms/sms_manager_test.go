@@ -1,13 +1,15 @@
 package sms
 
 import (
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
+	"os"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
-	"testing"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
 )
 
 type SmsManagerTestSuite struct {
@@ -26,6 +28,15 @@ func (ts *SmsManagerTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
 	Bootstrap(ProviderMulti)
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
+}
+
+func (ts SmsManagerTestSuite) Test_NormalizePhoneNumber() {
+	ts.Run("success", func() {
+		const phone = "+61 450 780 453"
+		mob, cc := NormalizePhoneNumber(phone)
+		assert.Equal(ts.T(), "+61450780453", mob)
+		assert.Equal(ts.T(), "+61", cc)
+	})
 }
 
 func (ts SmsManagerTestSuite) Test_GetCharacterCountForMessage() {

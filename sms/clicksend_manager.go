@@ -76,7 +76,7 @@ func (msm *multiSmsManager) initializeClickSend() {
 	}
 }
 
-func (msm multiSmsManager) sendSmsViaClickSend(options Options) error {
+func (msm multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, error) {
 	// Create a series of messages based on the number of recipients
 	msgs := make([]clickSendMsg, 0)
 	for _, rec := range options.Recipients {
@@ -93,10 +93,10 @@ func (msm multiSmsManager) sendSmsViaClickSend(options Options) error {
 	if os.Getenv("CI") != "true" {
 		return msm.dispatchClickSend(reqBody, url)
 	}
-	return nil
+	return nil, nil
 }
 
-func (msm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) error {
+func (msm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) (interface{}, error) {
 	var response clickSendResponseBody
 	resp, err := msm.client.R().
 		SetHeader("Content-Type", "application/json").
@@ -107,10 +107,7 @@ func (msm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url strin
 
 	if err != nil {
 		logger.Log.Error().Err(err).Msg("failed to send sms via click send")
-		return err
+		return nil, err
 	}
-
-	logger.Log.Debug().Msgf("http response -> %s", string(resp.Body()))
-	logger.Log.Debug().Msgf("click send response status -> %s", response.ResponseCode)
-	return nil
+	return resp.Body(), nil
 }

@@ -31,7 +31,7 @@ func (msm *multiSmsManager) initializeSmsBroadcast() {
 	}
 }
 
-func (msm multiSmsManager) sendSmsViaSmsBroadcast(options Options) error {
+func (msm multiSmsManager) sendSmsViaSmsBroadcast(options Options) (interface{}, error) {
 	// Create a series of messages based on the number of recipients
 	space := regexp.MustCompile(`\s+`)
 	to := ""
@@ -47,10 +47,10 @@ func (msm multiSmsManager) sendSmsViaSmsBroadcast(options Options) error {
 	if os.Getenv("CI") != "true" {
 		return msm.dispatchSmsBroadcast(options, to, url)
 	}
-	return nil
+	return nil, nil
 }
 
-func (msm multiSmsManager) dispatchSmsBroadcast(options Options, to string, url string) error {
+func (msm multiSmsManager) dispatchSmsBroadcast(options Options, to string, url string) (interface{}, error) {
 	resp, err := msm.client.R().
 		SetQueryParams(map[string]string{
 			"username": msm.sbc.username,
@@ -63,9 +63,7 @@ func (msm multiSmsManager) dispatchSmsBroadcast(options Options, to string, url 
 
 	if err != nil {
 		logger.Log.Error().Err(err).Msg("failed to send sms via sms broadcast")
-		return err
+		return nil, err
 	}
-
-	logger.Log.Debug().Msgf("http response -> %s", string(resp.Body()))
-	return nil
+	return resp.Body(), nil
 }

@@ -39,7 +39,8 @@ func (ts SnsManagerTestSuite) Test_snsManager_SendSms() {
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}
 
-		err := ts.m.SendSms(options)
+		res, err := ts.m.SendSms(options)
 		assert.NoError(ts.T(), err)
+		assert.Nil(ts.T(), res)
 	})
 }

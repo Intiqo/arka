@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"firebase.google.com/go/v4/messaging"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -41,7 +42,8 @@ func (ts FirebaseMessagingManagerTestSuite) Test_firebaseMessagingManager_SendNo
 			Tokens:   []string{gofakeit.UUID()},
 		}
 
-		failedTokens := ts.m.SendNotification(message)
+		res, failedTokens := ts.m.SendNotification(message)
 		assert.Equal(ts.T(), message.Tokens, failedTokens)
+		assert.Equal(ts.T(), 1, res.(*messaging.BatchResponse).FailureCount)
 	})
 }

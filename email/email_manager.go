@@ -30,7 +30,7 @@ type Options struct {
 // Manager ... An email service to send or receive emails
 type Manager interface {
 	// SendEmail ... Send email with options
-	SendEmail(options Options) error
+	SendEmail(options Options) (interface{}, error)
 }
 
 // Bootstrap ... Bootstrap the email service

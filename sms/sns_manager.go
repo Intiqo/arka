@@ -20,22 +20,23 @@ func (snsm *snsManager) initialize() {
 	snsm.snss = sns.New(session)
 }
 
-func (snsm snsManager) SendSms(options Options) error {
+func (snsm snsManager) SendSms(options Options) (interface{}, error) {
+	var res []*sns.PublishOutput
 	for _, recipient := range options.Recipients {
 		input := &sns.PublishInput{
 			Message:     aws.String(options.Message),
 			PhoneNumber: aws.String(recipient),
 		}
 		if os.Getenv("CI") == "true" {
-			return nil
+			return nil, nil
 		}
-		_, err := snsm.snss.Publish(input)
-
+		out, err := snsm.snss.Publish(input)
 		if err != nil {
 			logger.Log.Error().Err(err).Msgf("failed to send SMS for the mobile number, %s", recipient)
 			continue
 		}
+		res = append(res, out)
 	}
 
-	return nil
+	return res, nil
 }

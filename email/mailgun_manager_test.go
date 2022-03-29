@@ -5,13 +5,12 @@ import (
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"
-
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
 )
 
 type MailgunManagerTestSuite struct {
@@ -48,8 +47,9 @@ func (ts MailgunManagerTestSuite) Test_mailgunManager_SendEmail() {
 			Bcc:     []string{gofakeit.Email()},
 		}
 
-		err := ts.m.SendEmail(options)
+		res, err := ts.m.SendEmail(options)
 		assert.NoError(ts.T(), err)
+		assert.Equal(ts.T(), "", res)
 	})
 
 	ts.Run("success", func() {
@@ -64,7 +64,8 @@ func (ts MailgunManagerTestSuite) Test_mailgunManager_SendEmail() {
 			Attachments: []string{"./testdata/sample.txt"},
 		}
 
-		err := ts.m.SendEmail(options)
+		res, err := ts.m.SendEmail(options)
 		assert.NoError(ts.T(), err)
+		assert.Equal(ts.T(), "", res)
 	})
 }

@@ -32,7 +32,7 @@ func (f *firebaseManager) initialize() {
 	}
 }
 
-func (f firebaseManager) SendNotification(message Message) []string {
+func (f firebaseManager) SendNotification(message Message) (interface{}, []string) {
 	msg := &messaging.MulticastMessage{
 		Tokens: message.Tokens,
 		Data:   message.Data,
@@ -82,5 +82,5 @@ func (f firebaseManager) SendNotification(message Message) []string {
 			}
 		}
 	}
-	return failedTokens
+	return br, failedTokens
 }

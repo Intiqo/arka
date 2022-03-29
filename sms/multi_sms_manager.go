@@ -24,7 +24,7 @@ func (msm *multiSmsManager) initialize() {
 	msm.initializeSmsBroadcast()
 }
 
-func (msm multiSmsManager) SendSms(options Options) error {
+func (msm multiSmsManager) SendSms(options Options) (interface{}, error) {
 	const AUCode = "61"
 	// We segregate the AU recipients to send SMS via SMS Broadcast
 	auRecipients := segregateRecipients(options.Recipients, AUCode)
@@ -40,7 +40,7 @@ func (msm multiSmsManager) SendSms(options Options) error {
 		return msm.sendSmsViaClickSend(options)
 	}
 
-	return nil
+	return nil, nil
 }
 
 func segregateRecipients(recipients []string, code string) []string {

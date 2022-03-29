@@ -42,7 +42,7 @@ type Manager interface {
 	// SendSms ... Sends an SMS to the recipients.
 	//
 	// See Options to understand the structure
-	SendSms(options Options) error
+	SendSms(options Options) (interface{}, error)
 }
 
 // Bootstrap ... Bootstraps the SMS Manager

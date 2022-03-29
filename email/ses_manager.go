@@ -2,12 +2,12 @@ package email
 
 import (
 	"bytes"
-	"gopkg.in/gomail.v2"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/ses"
+	"gopkg.in/gomail.v2"
 
 	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/config"
@@ -21,7 +21,7 @@ type sesManager struct {
 	ses    *ses.SES
 }
 
-func (sm sesManager) SendEmail(options Options) error {
+func (sm sesManager) SendEmail(options Options) (interface{}, error) {
 	if len(options.Attachments) > 0 {
 		return sm.sendRawEmail(options)
 	}
@@ -53,25 +53,23 @@ func (sm sesManager) SendEmail(options Options) error {
 	return sm.dispatch(input)
 }
 
-func (sm sesManager) dispatch(input *ses.SendEmailInput) error {
+func (sm sesManager) dispatch(input *ses.SendEmailInput) (interface{}, error) {
 	if os.Getenv("CI") == "true" {
-		return nil
+		return nil, nil
 	}
-	_, err := sm.ses.SendEmail(input)
+	resp, err := sm.ses.SendEmail(input)
 	if err != nil {
 		if emailError, ok := err.(awserr.Error); ok {
 			logger.Log.Error().Err(emailError).Msgf("failed to send email, reason: %s", emailError.Code())
 		} else {
 			logger.Log.Error().Err(err).Msgf("failed to send email")
 		}
-		return err
+		return nil, err
 	}
-
-	logger.Log.Debug().Msg("sent email successfully")
-	return nil
+	return resp, nil
 }
 
-func (sm sesManager) sendRawEmail(options Options) error {
+func (sm sesManager) sendRawEmail(options Options) (interface{}, error) {
 	// Create raw message
 	msg := gomail.NewMessage()
 
@@ -118,7 +116,7 @@ func (sm sesManager) sendRawEmail(options Options) error {
 	var emailRaw bytes.Buffer
 	_, err := msg.WriteTo(&emailRaw)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Create new raw message
@@ -127,22 +125,20 @@ func (sm sesManager) sendRawEmail(options Options) error {
 	return sm.dispatchRawEmail(input)
 }
 
-func (sm sesManager) dispatchRawEmail(input *ses.SendRawEmailInput) error {
+func (sm sesManager) dispatchRawEmail(input *ses.SendRawEmailInput) (interface{}, error) {
 	if os.Getenv("CI") == "true" {
-		return nil
+		return nil, nil
 	}
-	_, err := sm.ses.SendRawEmail(input)
+	resp, err := sm.ses.SendRawEmail(input)
 	if err != nil {
 		if emailError, ok := err.(awserr.Error); ok {
 			logger.Log.Error().Err(emailError).Msgf("failed to send email, reason: %s", emailError.Code())
 		} else {
 			logger.Log.Error().Err(err).Msgf("failed to send email")
 		}
-		return err
+		return nil, err
 	}
-
-	logger.Log.Debug().Msg("sent raw email successfully")
-	return nil
+	return resp, nil
 }
 
 func (sm *sesManager) initialize() {

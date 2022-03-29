@@ -37,8 +37,9 @@ func (ts *MultiSmsManagerTestSuite) Test_multiSmsManager_SendSms() {
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}
 
-		err := ts.m.SendSms(options)
+		res, err := ts.m.SendSms(options)
 		assert.NoError(ts.T(), err)
+		assert.Nil(ts.T(), res)
 	})
 
 	ts.Run("success - smsbroadcast", func() {
@@ -47,8 +48,9 @@ func (ts *MultiSmsManagerTestSuite) Test_multiSmsManager_SendSms() {
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}
 
-		err := ts.m.SendSms(options)
+		res, err := ts.m.SendSms(options)
 		assert.NoError(ts.T(), err)
+		assert.Nil(ts.T(), res)
 	})
 
 }

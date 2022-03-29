@@ -30,7 +30,7 @@ func (m *mailgunManager) initialize() {
 	m.mg = mailgun.NewMailgun(domain, apiKey)
 }
 
-func (m *mailgunManager) SendEmail(options Options) error {
+func (m *mailgunManager) SendEmail(options Options) (interface{}, error) {
 	message := m.mg.NewMessage(options.Sender, options.Subject, options.Text)
 	for _, to := range options.To {
 		err := message.AddRecipient(to)
@@ -60,21 +60,19 @@ func (m *mailgunManager) SendEmail(options Options) error {
 	return m.dispatch(message, options)
 }
 
-func (m *mailgunManager) dispatch(message *mailgun.Message, options Options) error {
+func (m *mailgunManager) dispatch(message *mailgun.Message, options Options) (interface{}, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	var resp, id string
+	var resp string
 	var err error
 	if os.Getenv("CI") != "true" {
-		resp, id, err = m.mg.Send(ctx, message)
+		resp, _, err = m.mg.Send(ctx, message)
 	}
 
 	if err != nil {
 		logger.Log.Error().Err(err).Stack().Msg("failed to send email")
-		return err
+		return nil, err
 	}
-
-	logger.Log.Debug().Strs("data", []string{options.Subject, id, resp}).Msg("sent email successfully")
-	return nil
+	return resp, nil
 }

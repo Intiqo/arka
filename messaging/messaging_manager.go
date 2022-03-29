@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/adwitiyaio/arka/config"
-
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
 )
@@ -26,7 +25,7 @@ type Manager interface {
 	//
 	// @param {Message} message A message object
 	// @return {[]string} Returns a list of failed tokens
-	SendNotification(message Message) []string
+	SendNotification(message Message) (interface{}, []string)
 }
 
 // Bootstrap ... Bootstraps the cloud manager
