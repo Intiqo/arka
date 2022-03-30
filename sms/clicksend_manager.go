@@ -41,7 +41,7 @@ type clickSendResponseBody struct {
 			To           string      `json:"to"`
 			Body         string      `json:"body"`
 			From         string      `json:"from"`
-			Schedule     int         `json:"schedule"`
+			Schedule     interface{} `json:"schedule"`
 			MessageID    string      `json:"message_id"`
 			MessageParts int         `json:"message_parts"`
 			MessagePrice interface{} `json:"message_price"`
