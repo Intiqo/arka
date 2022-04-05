@@ -95,7 +95,6 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 	}
 
 	if len(result.Messages) == 0 {
-		logger.Log.Debug().Msg("No messages received from the queue")
 		return response, nil
 	}
 
