@@ -13,6 +13,12 @@ import (
 
 const messagingFirebaseConfigPath = "FIREBASE_MESSAGING_CONFIG_PATH"
 
+type messageResponse struct {
+	MessageID string `json:"message_id"`
+	Error     error  `json:"error"`
+	Success   bool   `json:"success"`
+}
+
 type firebaseManager struct {
 	cm     config.Manager
 	client *messaging.Client
@@ -82,5 +88,13 @@ func (f firebaseManager) SendNotification(message Message) (interface{}, []strin
 			}
 		}
 	}
-	return br, failedTokens
+	responseData := make([]messageResponse, 0)
+	for _, resp := range br.Responses {
+		responseData = append(responseData, messageResponse{
+			MessageID: resp.MessageID,
+			Error:     resp.Error,
+			Success:   resp.Success,
+		})
+	}
+	return responseData, failedTokens
 }
