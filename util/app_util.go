@@ -5,8 +5,9 @@ import (
 	"io"
 	"time"
 
-	"github.com/adwitiyaio/arka/dependency"
 	"github.com/gofrs/uuid"
+
+	"github.com/adwitiyaio/arka/dependency"
 )
 
 const DependencyAppUtil = "app_util"
@@ -16,7 +17,7 @@ type AppUtil interface {
 	// GetCurrentTime ... Get the current time from the system
 	GetCurrentTime() time.Time
 
-	//GenerateOTP ... Generate a one time password
+	// GenerateOTP ... Generate a one time password
 	GenerateOTP(length int) string
 	// GenerateUniqueToken ... Generate a unique token
 	GenerateUniqueToken() string
@@ -28,7 +29,9 @@ type AppUtil interface {
 
 	// ParseStringForTime ... Parse string into time.RFC3339 format
 	ParseStringForTime(date string) (time.Time, error)
-	//FormatDate ... Format date to get day of month with suffix
+	// ParseStringForTimeWithLocation ... Parse string into time.RFC3339 format
+	ParseStringForTimeWithLocation(date string, loc *time.Location) (time.Time, error)
+	// FormatDate ... Format date to get day of month with suffix
 	FormatDate(t time.Time) string
 	// IsTimeExpired ... Validate if the specified time has expired based on the current time
 	IsTimeExpired(t time.Time) bool
@@ -87,6 +90,11 @@ func (as *simpleAppUtil) CompareSlices(a, b []string) (diff []string) {
 
 func (as *simpleAppUtil) ParseStringForTime(date string) (time.Time, error) {
 	tm, err := time.Parse(time.RFC3339, date)
+	return tm, err
+}
+
+func (as *simpleAppUtil) ParseStringForTimeWithLocation(date string, loc *time.Location) (time.Time, error) {
+	tm, err := time.ParseInLocation(time.RFC3339, date, loc)
 	return tm, err
 }
 
