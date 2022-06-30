@@ -23,6 +23,7 @@ const unicodeMultiSmsCharacterCount = 66
 
 const ProviderMulti = "multi"
 const ProviderSns = "sns"
+const ProviderTermii = "termii"
 
 // Options ... Various options to send an SMS.
 //
@@ -60,6 +61,11 @@ func Bootstrap(provider string) {
 			clm: dm.Get(cloud.DependencyCloudManager).(cloud.Manager),
 		}
 		smsManager.(*snsManager).initialize()
+	case ProviderTermii:
+		smsManager = &termiiManager{
+			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+		}
+		smsManager.(*termiiManager).initialize()
 	default:
 		err := errors.New("sms provider unknown")
 		logger.Log.Fatal().Err(err).Str("provider", provider)
@@ -71,7 +77,7 @@ func ParsePhoneNumber(mobileNumber string) (*phonenumbers.PhoneNumber, error) {
 	return phonenumbers.Parse(mobileNumber, "")
 }
 
-// Normalizes a phone number by removing leading zeros
+// NormalizePhoneNumber ... Normalizes a phone number by removing leading zeros
 // Returns the normalized phone number and the country code
 func NormalizePhoneNumber(phoneNumber string) (string, string) {
 	var countryCode string

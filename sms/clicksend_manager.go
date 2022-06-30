@@ -61,46 +61,48 @@ type clickSendResponseBody struct {
 	} `json:"data"`
 }
 
-func (msm *multiSmsManager) initializeClickSend() {
-	username := msm.cm.GetValueForKey(clickSendUsernameKey)
-	apiKey := msm.cm.GetValueForKey(clickSendApiKey)
+func (tm *multiSmsManager) initializeClickSend() {
+	username := tm.cm.GetValueForKey(clickSendUsernameKey)
+	apiKey := tm.cm.GetValueForKey(clickSendApiKey)
 
 	auth := fmt.Sprintf("%s:%s", username, apiKey)
 	encAuth := base64.StdEncoding.EncodeToString([]byte(auth))
 	ah := fmt.Sprintf("Basic %s", encAuth)
 
-	msm.csc = &clickSendProvider{
+	tm.csc = &clickSendProvider{
 		baseUrl:     "https://rest.clicksend.com/v3",
 		sendSmsPath: "/sms/send",
 		authHeader:  ah,
 	}
 }
 
-func (msm multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, error) {
+func (tm multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, error) {
 	// Create a series of messages based on the number of recipients
 	msgs := make([]clickSendMsg, 0)
 	for _, rec := range options.Recipients {
-		msgs = append(msgs, clickSendMsg{
-			To:     rec,
-			Source: "app",
-			Body:   options.Message,
-		})
+		msgs = append(
+			msgs, clickSendMsg{
+				To:     rec,
+				Source: "app",
+				Body:   options.Message,
+			},
+		)
 	}
 
 	reqBody := clickSendSmsBody{Messages: msgs}
-	url := fmt.Sprintf("%s%s", msm.csc.baseUrl, msm.csc.sendSmsPath)
+	url := fmt.Sprintf("%s%s", tm.csc.baseUrl, tm.csc.sendSmsPath)
 
 	if os.Getenv("CI") != "true" {
-		return msm.dispatchClickSend(reqBody, url)
+		return tm.dispatchClickSend(reqBody, url)
 	}
 	return nil, nil
 }
 
-func (msm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) (interface{}, error) {
+func (tm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) (interface{}, error) {
 	var response clickSendResponseBody
-	resp, err := msm.client.R().
+	resp, err := tm.client.R().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", msm.csc.authHeader).
+		SetHeader("Authorization", tm.csc.authHeader).
 		SetBody(reqBody).
 		SetResult(&response).
 		Post(url)

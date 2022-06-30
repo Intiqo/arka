@@ -18,26 +18,26 @@ type multiSmsManager struct {
 	sbc *smsBroadcastProvider
 }
 
-func (msm *multiSmsManager) initialize() {
-	msm.client = resty.New()
-	msm.initializeClickSend()
-	msm.initializeSmsBroadcast()
+func (tm *multiSmsManager) initialize() {
+	tm.client = resty.New()
+	tm.initializeClickSend()
+	tm.initializeSmsBroadcast()
 }
 
-func (msm multiSmsManager) SendSms(options Options) (interface{}, error) {
+func (tm multiSmsManager) SendSms(options Options) (interface{}, error) {
 	const AUCode = "61"
 	// We segregate the AU recipients to send SMS via SMS Broadcast
 	auRecipients := segregateRecipients(options.Recipients, AUCode)
 	if len(auRecipients) > 0 {
 		options.Recipients = auRecipients
-		return msm.sendSmsViaSmsBroadcast(options)
+		return tm.sendSmsViaSmsBroadcast(options)
 	}
 
 	// We segregate all other recipients to send SMS via ClickSend
 	otherRecipients := segregateRecipients(options.Recipients, "")
 	if len(otherRecipients) > 0 {
 		options.Recipients = otherRecipients
-		return msm.sendSmsViaClickSend(options)
+		return tm.sendSmsViaClickSend(options)
 	}
 
 	return nil, nil

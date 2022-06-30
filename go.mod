@@ -26,6 +26,8 @@ require (
 	gorm.io/gorm v1.21.15
 )
 
+require github.com/Uchencho/go-termii v1.0.2 // indirect
+
 require (
 	cloud.google.com/go v0.75.0 // indirect
 	cloud.google.com/go/firestore v1.5.0 // indirect

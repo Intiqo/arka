@@ -44,6 +44,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
+github.com/Uchencho/go-termii v1.0.2 h1:Qed/Innbi0U3+cK1cJc7DlAo0h/ykABwgIT6R79/GZE=
+github.com/Uchencho/go-termii v1.0.2/go.mod h1:zyaPjb/BV0FTan6z+Imw/jL/yIorXZKnKqzY4pTNDDY=
 github.com/aws/aws-sdk-go v1.38.42 h1:94blpbGDe2q5e0Xoop7131uzI2CH2qitQoptSMrkJP8=
 github.com/aws/aws-sdk-go v1.38.42/go.mod h1:hcU610XS61/+aQV88ixoOzUoG7v3b31pl2zKMmprdro=
 github.com/brianvoe/gofakeit/v6 v6.4.1 h1:u4lPnxVNr648hEyoIz31A8zrQl5woUQbCgqjAj/n/Y4=
