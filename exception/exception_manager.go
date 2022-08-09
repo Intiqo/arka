@@ -103,7 +103,12 @@ func (r ValidationException) Error() string {
 
 // CreateValidationException ... Create a new exception for invalid requests
 func CreateValidationException(msg string, data ...string) ValidationException {
+	if len(data) > 0 {
+		return ValidationException{
+			Message: fmt.Sprintf(msg, data),
+		}
+	}
 	return ValidationException{
-		Message: fmt.Sprintf(msg, data),
+		Message: fmt.Sprintf(msg),
 	}
 }
