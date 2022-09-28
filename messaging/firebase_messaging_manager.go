@@ -2,6 +2,7 @@ package messaging
 
 import (
 	"context"
+	"os"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
@@ -32,6 +33,9 @@ func (f *firebaseManager) initialize() {
 		logger.Log.Fatal().Err(err).Msg("failed to initialize firebase app")
 	}
 	ctx := context.Background()
+	if os.Getenv("FIREBASE_MESSAGING_DISABLED") == "true" {
+		return
+	}
 	f.client, err = app.Messaging(ctx)
 	if err != nil {
 		logger.Log.Fatal().Err(err).Msg("failed to get firebase messaging client")
