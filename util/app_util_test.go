@@ -176,3 +176,21 @@ func (ts *AppUtilTestSuite) Test_simpleAppUtil_FormatDate() {
 		},
 	)
 }
+
+func (ts *AppUtilTestSuite) Test_simpleAppUtil_ParseWeekday() {
+	ts.Run(
+		"invalid weekday", func() {
+			_, err := ts.a.ParseWeekday("November")
+			assert.Error(ts.T(), err)
+			assert.Equal(ts.T(), "invalid weekday 'November'", err.Error())
+		},
+	)
+
+	ts.Run(
+		"success", func() {
+			result, err := ts.a.ParseWeekday(time.Monday.String())
+			assert.NoError(ts.T(), err)
+			assert.Equal(ts.T(), time.Monday, result)
+		},
+	)
+}

@@ -2,6 +2,7 @@ package util
 
 import (
 	"crypto/rand"
+	"fmt"
 	"io"
 	"time"
 
@@ -11,6 +12,16 @@ import (
 )
 
 const DependencyAppUtil = "app_util"
+
+var daysOfWeek = map[string]time.Weekday{
+	"Sunday":    time.Sunday,
+	"Monday":    time.Monday,
+	"Tuesday":   time.Tuesday,
+	"Wednesday": time.Wednesday,
+	"Thursday":  time.Thursday,
+	"Friday":    time.Friday,
+	"Saturday":  time.Saturday,
+}
 
 // AppUtil ... Service providing utility functionality throughout the application
 type AppUtil interface {
@@ -33,6 +44,10 @@ type AppUtil interface {
 	ParseStringForTimeWithLocation(date string, loc *time.Location) (time.Time, error)
 	// FormatDate ... Format date to get day of month with suffix
 	FormatDate(t time.Time) string
+	// ParseWeekday ... Parses a string and returns corresponding weekday for it
+	//
+	// For example, if you pass "Monday", it returns "1"
+	ParseWeekday(v string) (time.Weekday, error)
 	// IsTimeExpired ... Validate if the specified time has expired based on the current time
 	IsTimeExpired(t time.Time) bool
 }
@@ -99,10 +114,7 @@ func (as *simpleAppUtil) ParseStringForTimeWithLocation(date string, loc *time.L
 }
 
 func (as *simpleAppUtil) IsTimeExpired(t time.Time) bool {
-	if time.Now().Sub(t).Seconds() <= 0 {
-		return false
-	}
-	return true
+	return time.Since(t).Seconds() > 0
 }
 
 func (as simpleAppUtil) FormatDate(t time.Time) string {
@@ -116,4 +128,12 @@ func (as simpleAppUtil) FormatDate(t time.Time) string {
 		suffix = "rd"
 	}
 	return t.Format("2" + suffix + " Jan")
+}
+
+func (as simpleAppUtil) ParseWeekday(v string) (time.Weekday, error) {
+	if d, ok := daysOfWeek[v]; ok {
+		return d, nil
+	}
+
+	return time.Sunday, fmt.Errorf("invalid weekday '%s'", v)
 }

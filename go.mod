@@ -1,6 +1,6 @@
 module github.com/adwitiyaio/arka
 
-go 1.17
+go 1.19
 
 require (
 	firebase.google.com/go/v4 v4.6.1
