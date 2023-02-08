@@ -3,11 +3,11 @@ package cloud
 import (
 	"testing"
 
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
 )
 
 type AwsManagerTestSuite struct {
@@ -27,10 +27,10 @@ func (ts *AwsManagerTestSuite) SetupSuite() {
 	ts.clm = dm.Get(DependencyCloudManager).(Manager)
 }
 
-func (ts AwsManagerTestSuite) Test_awsCloudManager_GetSession() {
+func (ts AwsManagerTestSuite) Test_awsCloudManager_GetConfig() {
 	ts.Run("success", func() {
-		sess := ts.clm.GetSession()
-		assert.NotNil(ts.T(), sess)
+		config := ts.clm.GetConfig()
+		assert.NotNil(ts.T(), config)
 	})
 }
 

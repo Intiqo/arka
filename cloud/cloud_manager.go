@@ -3,7 +3,7 @@ package cloud
 import (
 	"errors"
 
-	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go-v2/aws"
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
@@ -15,8 +15,7 @@ const DependencyCloudManager = "cloud_manager"
 const ProviderAws = "AWS"
 
 type Manager interface {
-	// GetSession Gets the session for the cloud provider
-	GetSession() *session.Session
+	GetConfig() aws.Config
 	// GetRegion Gets the region for the cloud provider
 	GetRegion() string
 }
