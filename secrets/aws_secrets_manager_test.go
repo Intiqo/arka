@@ -26,7 +26,7 @@ func (ts *AwsSecretsManagerTestSuite) SetupSuite() {
 	secretName := cm.GetValueForKey(AwsSecretNameKey)
 	Bootstrap(ProviderAwsSecrets, secretName)
 	fmt.Println("Secret Name: ", secretName)
-	fmt.Println("Bootstrap Successful!")
+	fmt.Printf("Bootstrap Successful (Aws)!")
 	ts.m = dm.Get(DependencySecretsManager).(Manager)
 }
 
@@ -37,13 +37,13 @@ func TestAwsSecretsManager(t *testing.T) {
 func (ts AwsSecretsManagerTestSuite) Test_awsSecretsManager_GetValueForKey() {
 	ts.Run("success", func() {
 		res := ts.m.GetValueForKey(constants.AppNameKey)
-		fmt.Println("Get Key result(App Name): ", res)
+		fmt.Printf("Get Key result(App Name): %s", res)
 		assert.Equal(ts.T(), "App", res)
 	})
 
 	ts.Run("unknown key", func() {
 		res := ts.m.GetValueForKey("unknown")
-		fmt.Println("Get Key result (unknown): ", res)
+		fmt.Printf("Get Key result (unknown): %s", res)
 		assert.Equal(ts.T(), "", res)
 	})
 }
