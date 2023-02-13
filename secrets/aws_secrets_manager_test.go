@@ -31,7 +31,7 @@ func TestAwsSecretsManager(t *testing.T) {
 	suite.Run(t, new(AwsSecretsManagerTestSuite))
 }
 
-func (ts AwsSecretsManagerTestSuite) Test_environmentConfigManager_GetValueForKey() {
+func (ts AwsSecretsManagerTestSuite) Test_awsSecretsManager_GetValueForKey() {
 	ts.Run("success", func() {
 		res := ts.m.GetValueForKey(constants.AppNameKey)
 		assert.Equal(ts.T(), "App", res)

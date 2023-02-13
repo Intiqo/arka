@@ -23,11 +23,11 @@ func (ts *EnvironmentSecretsManagerTestSuite) SetupSuite() {
 	ts.m = dm.Get(DependencySecretsManager).(Manager)
 }
 
-func TestEnvironmentConfigManager(t *testing.T) {
+func TestEnvironmentSecretsManager(t *testing.T) {
 	suite.Run(t, new(EnvironmentSecretsManagerTestSuite))
 }
 
-func (ts EnvironmentSecretsManagerTestSuite) Test_environmentConfigManager_GetValueForKey() {
+func (ts EnvironmentSecretsManagerTestSuite) Test_environmentSecretsManager_GetValueForKey() {
 	ts.Run("success", func() {
 		res := ts.m.GetValueForKey(constants.AppNameKey)
 		assert.Equal(ts.T(), "App", res)
