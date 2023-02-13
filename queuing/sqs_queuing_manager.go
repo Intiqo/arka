@@ -8,14 +8,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const regionKey = "AWS_REGION"
 
 type sqsManager struct {
-	cm     config.Manager
+	sm     secrets.Manager
 	clm    cloud.Manager
 	client *sqs.Client
 	region string
@@ -23,7 +23,7 @@ type sqsManager struct {
 
 func (s *sqsManager) initialize() {
 	config := s.clm.GetConfig()
-	s.region = s.cm.GetValueForKey(regionKey)
+	s.region = s.sm.GetValueForKey(regionKey)
 	s.client = sqs.NewFromConfig(config)
 }
 

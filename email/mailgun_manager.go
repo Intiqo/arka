@@ -7,21 +7,21 @@ import (
 
 	"github.com/mailgun/mailgun-go/v4"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const domainKey = "MAILGUN_DOMAIN"
 const apiKey = "MAILGUN_API_KEY"
 
 type mailgunManager struct {
-	cm config.Manager
+	sm secrets.Manager
 	mg *mailgun.MailgunImpl
 }
 
 func (m *mailgunManager) initialize() {
-	domain := m.cm.GetValueForKey(domainKey)
-	apiKey := m.cm.GetValueForKey(apiKey)
+	domain := m.sm.GetValueForKey(domainKey)
+	apiKey := m.sm.GetValueForKey(apiKey)
 
 	if domain == "" || apiKey == "" {
 		logger.Log.Panic().Msg("failed to initialize mailgun")

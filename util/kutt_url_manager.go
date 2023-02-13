@@ -40,8 +40,8 @@ type kuttUrl struct {
 }
 
 func (mus *multiUrlManager) initializeKutt() {
-	kuttBaseUrl := mus.cm.GetValueForKey(kuttApiUrlKey)
-	kuttApiKey := mus.cm.GetValueForKey(kuttApiKey)
+	kuttBaseUrl := mus.sm.GetValueForKey(kuttApiUrlKey)
+	kuttApiKey := mus.sm.GetValueForKey(kuttApiKey)
 	mus.kp = &kuttProvider{
 		BaseUrl:        kuttBaseUrl,
 		ApiKey:         kuttApiKey,

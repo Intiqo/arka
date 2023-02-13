@@ -6,14 +6,14 @@ import (
 
 	termii "github.com/Uchencho/go-termii"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const termiiApiKey = "TERMII_API_KEY"
 
 type termiiManager struct {
-	cm config.Manager
+	sm secrets.Manager
 
 	apiKey string
 	client termii.Client
@@ -21,7 +21,7 @@ type termiiManager struct {
 
 func (tm *termiiManager) initialize() {
 	tm.client = termii.NewClient()
-	tm.apiKey = tm.cm.GetValueForKey(termiiApiKey)
+	tm.apiKey = tm.sm.GetValueForKey(termiiApiKey)
 }
 
 func (tm termiiManager) SendSms(options Options) (interface{}, error) {

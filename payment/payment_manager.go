@@ -3,8 +3,8 @@ package payment
 import (
 	"time"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyPaymentManager = "payment_manager"
@@ -114,7 +114,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderStripe:
 		pm = &stripePaymentManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		pm.(*stripePaymentManager).initialize()
 	}

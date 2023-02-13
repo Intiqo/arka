@@ -8,22 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/ses/types"
-	"github.com/aws/aws-sdk-go/aws/awserr"
 	"gopkg.in/gomail.v2"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/logger"
 )
 
 type sesManager struct {
-	cm     config.Manager
 	clm    cloud.Manager
 	region string
 	client *ses.Client
 }
 
-func (sm sesManager) SendEmail(options Options) (interface{}, error) {
+func (sm *sesManager) SendEmail(options Options) (interface{}, error) {
 	if len(options.Attachments) > 0 {
 		return sm.sendRawEmail(options)
 	}
@@ -61,11 +57,6 @@ func (sm sesManager) dispatch(input *ses.SendEmailInput) (interface{}, error) {
 	}
 	resp, err := sm.client.SendEmail(context.TODO(), input)
 	if err != nil {
-		if emailError, ok := err.(awserr.Error); ok {
-			logger.Log.Error().Err(emailError).Msgf("failed to send email, reason: %s", emailError.Code())
-		} else {
-			logger.Log.Error().Err(err).Msgf("failed to send email")
-		}
 		return nil, err
 	}
 	return resp, nil
@@ -130,11 +121,6 @@ func (sm sesManager) dispatchRawEmail(input *ses.SendRawEmailInput) (interface{}
 	}
 	resp, err := sm.client.SendRawEmail(context.TODO(), input)
 	if err != nil {
-		if emailError, ok := err.(awserr.Error); ok {
-			logger.Log.Error().Err(emailError).Msgf("failed to send email, reason: %s", emailError.Code())
-		} else {
-			logger.Log.Error().Err(err).Msgf("failed to send email")
-		}
 		return nil, err
 	}
 	return resp, nil

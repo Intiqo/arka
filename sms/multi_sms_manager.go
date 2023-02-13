@@ -6,12 +6,12 @@ import (
 
 	"github.com/go-resty/resty/v2"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type multiSmsManager struct {
-	cm     config.Manager
+	sm     secrets.Manager
 	client *resty.Client
 
 	csc *clickSendProvider

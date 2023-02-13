@@ -10,16 +10,16 @@ import (
 	"github.com/gabriel-vasile/mimetype"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/exception"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const regionKey = "AWS_REGION"
 const storageBucketKey = "AWS_STORAGE_BUCKET"
 
 type awsS3Manager struct {
-	cm     config.Manager
+	sm     secrets.Manager
 	clm    cloud.Manager
 	client *s3.Client
 	region string
@@ -29,8 +29,8 @@ type awsS3Manager struct {
 func (cfm *awsS3Manager) initialize() {
 	config := cfm.clm.GetConfig()
 	cfm.client = s3.NewFromConfig(config)
-	cfm.bucket = cfm.cm.GetValueForKey(storageBucketKey)
-	cfm.region = cfm.cm.GetValueForKey(regionKey)
+	cfm.bucket = cfm.sm.GetValueForKey(storageBucketKey)
+	cfm.region = cfm.sm.GetValueForKey(regionKey)
 }
 
 func (cfm *awsS3Manager) UploadFile(filename string, contentType string, file io.Reader, directory *string) (string, error) {

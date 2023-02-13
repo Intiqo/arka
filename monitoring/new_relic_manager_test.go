@@ -7,6 +7,7 @@ import (
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type MonitoringManagerTestSuite struct {
@@ -17,6 +18,7 @@ type MonitoringManagerTestSuite struct {
 
 func (ts *MonitoringManagerTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	Bootstrap(ProviderNewRelic)
 	ts.mm = dependency.GetManager().Get(DependencyMonitoringManager).(Manager)
 }

@@ -62,8 +62,8 @@ type clickSendResponseBody struct {
 }
 
 func (tm *multiSmsManager) initializeClickSend() {
-	username := tm.cm.GetValueForKey(clickSendUsernameKey)
-	apiKey := tm.cm.GetValueForKey(clickSendApiKey)
+	username := tm.sm.GetValueForKey(clickSendUsernameKey)
+	apiKey := tm.sm.GetValueForKey(clickSendApiKey)
 
 	auth := fmt.Sprintf("%s:%s", username, apiKey)
 	encAuth := base64.StdEncoding.EncodeToString([]byte(auth))

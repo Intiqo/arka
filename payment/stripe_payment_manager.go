@@ -4,26 +4,25 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/stripe/stripe-go/v72/paymentintent"
-
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/customer"
+	"github.com/stripe/stripe-go/v72/paymentintent"
 	"github.com/stripe/stripe-go/v72/paymentmethod"
 	"github.com/stripe/stripe-go/v72/price"
 	"github.com/stripe/stripe-go/v72/product"
 	"github.com/stripe/stripe-go/v72/sub"
 
-	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const stripeTokenKey = "STRIPE_TOKEN"
 
 type stripePaymentManager struct {
-	cm config.Manager
+	sm secrets.Manager
 }
 
 func (s stripePaymentManager) initialize() {
-	stripe.Key = s.cm.GetValueForKey(stripeTokenKey)
+	stripe.Key = s.sm.GetValueForKey(stripeTokenKey)
 }
 
 // CreateCustomer ... Creates a new customer on the payment gateway and returns the ID of the customer

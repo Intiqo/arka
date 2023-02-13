@@ -4,14 +4,16 @@ import (
 	"os"
 	"testing"
 
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"github.com/stripe/stripe-go/v72/customer"
 	"github.com/stripe/stripe-go/v72/product"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type StripePaymentGatewayTestSuite struct {
@@ -30,6 +32,7 @@ func TestStripePaymentGateway(t *testing.T) {
 
 func (ts *StripePaymentGatewayTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	err := os.Setenv("CI", "true")
 	require.NoError(ts.T(), err)
 	Bootstrap(ProviderStripe)

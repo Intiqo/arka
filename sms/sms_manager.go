@@ -9,9 +9,9 @@ import (
 	"github.com/nyaruka/phonenumbers"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencySmsManager = "sms_manager"
@@ -53,7 +53,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderMulti:
 		smsManager = &multiSmsManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		smsManager.(*multiSmsManager).initialize()
 	case ProviderSns:
@@ -63,7 +63,7 @@ func Bootstrap(provider string) {
 		smsManager.(*snsManager).initialize()
 	case ProviderTermii:
 		smsManager = &termiiManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		smsManager.(*termiiManager).initialize()
 	default:

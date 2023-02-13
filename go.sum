@@ -46,8 +46,6 @@ github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030I
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/Uchencho/go-termii v1.0.2 h1:Qed/Innbi0U3+cK1cJc7DlAo0h/ykABwgIT6R79/GZE=
 github.com/Uchencho/go-termii v1.0.2/go.mod h1:zyaPjb/BV0FTan6z+Imw/jL/yIorXZKnKqzY4pTNDDY=
-github.com/aws/aws-sdk-go v1.38.42 h1:94blpbGDe2q5e0Xoop7131uzI2CH2qitQoptSMrkJP8=
-github.com/aws/aws-sdk-go v1.38.42/go.mod h1:hcU610XS61/+aQV88ixoOzUoG7v3b31pl2zKMmprdro=
 github.com/aws/aws-sdk-go-v2 v1.17.4 h1:wyC6p9Yfq6V2y98wfDsj6OnNQa4w2BLGCLIxzNhwOGY=
 github.com/aws/aws-sdk-go-v2 v1.17.4/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 h1:dK82zF6kkPeCo8J1e+tGx4JdvDIQzj7ygIoLg8WMuGs=
@@ -76,6 +74,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.22 h1:ISLJ2BKXe4zzy
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.22/go.mod h1:QFVbqK54XArazLvn2wvWMRBi/jGrWii46qbr5DyPGjc=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2 h1:5EQWIFO+Hc8E2hFcXQJ1vm6ufl/PMt/6RVRDZRju2vM=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2/go.mod h1:SXDHd6fI2RhqB7vmAzyYQCTQnpZrIprVJvYxpzW3JAM=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.3 h1:Zod/h9QcDvbrrG3jjTUp4lctRb6Qg2nj7ARC/xMsUc4=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.3/go.mod h1:hqPcyOuLU6yWIbLy3qMnQnmidgKuIEwqIlW6+chYnog=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.1 h1:k7emv7hC/n/QfqOf8O6CBdAOmP3bVaL9LJcYairC91s=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.1/go.mod h1:fI2JtBv9WeGYXg+rKcd5B9td3Qw0kghB6EX00mAvSlI=
 github.com/aws/aws-sdk-go-v2/service/sns v1.20.1 h1:VbbZ4Irb+fScR/J1SdIawecsnRCOfOR20ogRPMloTDg=
@@ -461,7 +461,6 @@ golang.org/x/net v0.0.0-20200707034311-ab3426394381/go.mod h1:/O7V0waA8r7cgGh81R
 golang.org/x/net v0.0.0-20200822124328-c89045814202/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/net v0.0.0-20201021035429-f5854403a974/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
 golang.org/x/net v0.0.0-20201031054903-ff519b6c9102/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
-golang.org/x/net v0.0.0-20201110031124-69a78807bb2b/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
 golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb/go.mod h1:sp8m0HH+o8qH0wwXwYZr8TS3Oi6o0r6Gce1SSxlDquU=
 golang.org/x/net v0.0.0-20201209123823-ac852fbbde11/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=
 golang.org/x/net v0.0.0-20201224014010-6772e930b67b/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=

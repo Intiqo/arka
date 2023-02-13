@@ -20,8 +20,8 @@ type smsBroadcastProvider struct {
 }
 
 func (tm *multiSmsManager) initializeSmsBroadcast() {
-	username := tm.cm.GetValueForKey(smsBroadcastUsernameKey)
-	password := tm.cm.GetValueForKey(smsBroadcastPasswordKey)
+	username := tm.sm.GetValueForKey(smsBroadcastUsernameKey)
+	password := tm.sm.GetValueForKey(smsBroadcastPasswordKey)
 
 	tm.sbc = &smsBroadcastProvider{
 		username:    username,

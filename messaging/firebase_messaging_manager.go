@@ -8,8 +8,8 @@ import (
 	"firebase.google.com/go/v4/messaging"
 	"google.golang.org/api/option"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const messagingFirebaseConfigPath = "FIREBASE_MESSAGING_CONFIG_PATH"
@@ -21,12 +21,12 @@ type messageResponse struct {
 }
 
 type firebaseManager struct {
-	cm     config.Manager
+	sm     secrets.Manager
 	client *messaging.Client
 }
 
 func (f *firebaseManager) initialize() {
-	fbConfigPath := f.cm.GetValueForKey(messagingFirebaseConfigPath)
+	fbConfigPath := f.sm.GetValueForKey(messagingFirebaseConfigPath)
 	opt := option.WithCredentialsFile(fbConfigPath)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {

@@ -3,9 +3,9 @@ package messaging
 import (
 	"errors"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyMessagingManager = "messaging_manager"
@@ -35,7 +35,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderFirebase:
 		mm = &firebaseManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		mm.(*firebaseManager).initialize()
 	default:

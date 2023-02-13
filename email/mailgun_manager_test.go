@@ -11,6 +11,7 @@ import (
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type MailgunManagerTestSuite struct {
@@ -25,6 +26,7 @@ func TestMailgunManager(t *testing.T) {
 
 func (ts *MailgunManagerTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	err := os.Setenv("CI", "true")
 	require.NoError(ts.T(), err)
 	Bootstrap(ProviderMailgun)

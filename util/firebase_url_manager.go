@@ -57,15 +57,15 @@ type firebaseDeepLinkRequest struct {
 }
 
 func (mus *multiUrlManager) initializeFirebase() {
-	apiKey := mus.cm.GetValueForKey(firebaseDeepLinkApiKey)
-	shortsLinkUrl := mus.cm.GetValueForKey(firebaseDeepLinkShortLinksUrls)
-	dynamicLinkDomain := mus.cm.GetValueForKey(firebaseDeepLinkDynamicLinkDomain)
-	androidPackageName := mus.cm.GetValueForKey(firebaseDeepLinkAndroidPackageName)
-	iosBundleId := mus.cm.GetValueForKey(firebaseDeepLinkIosBundleId)
-	iosStoreId := mus.cm.GetValueForKey(firebaseDeepLinkIosStoreId)
-	socialTitle := mus.cm.GetValueForKey(firebaseDeepLinkSocialTitle)
-	socialDescription := mus.cm.GetValueForKey(firebaseDeepLinkSocialDescription)
-	socialImageUrl := mus.cm.GetValueForKey(firebaseDeepLinkSocialImageUrl)
+	apiKey := mus.sm.GetValueForKey(firebaseDeepLinkApiKey)
+	shortsLinkUrl := mus.sm.GetValueForKey(firebaseDeepLinkShortLinksUrls)
+	dynamicLinkDomain := mus.sm.GetValueForKey(firebaseDeepLinkDynamicLinkDomain)
+	androidPackageName := mus.sm.GetValueForKey(firebaseDeepLinkAndroidPackageName)
+	iosBundleId := mus.sm.GetValueForKey(firebaseDeepLinkIosBundleId)
+	iosStoreId := mus.sm.GetValueForKey(firebaseDeepLinkIosStoreId)
+	socialTitle := mus.sm.GetValueForKey(firebaseDeepLinkSocialTitle)
+	socialDescription := mus.sm.GetValueForKey(firebaseDeepLinkSocialDescription)
+	socialImageUrl := mus.sm.GetValueForKey(firebaseDeepLinkSocialImageUrl)
 	mus.fbp = &firebaseDeepLinkProvider{
 		shortsLinkUrl:      shortsLinkUrl,
 		apiKey:             apiKey,

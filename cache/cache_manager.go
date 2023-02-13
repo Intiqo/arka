@@ -2,9 +2,10 @@ package cache
 
 import (
 	"errors"
-	"github.com/adwitiyaio/arka/config"
+
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyCacheManager = "cache_manager"
@@ -29,7 +30,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderRedis:
 		r = &redisCacheManager{
-			cm: c.Get(config.DependencyConfigManager).(config.Manager),
+			sm: c.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		r.(*redisCacheManager).initialize()
 	default:

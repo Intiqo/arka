@@ -2,17 +2,19 @@ package database
 
 import (
 	"errors"
-	"github.com/adwitiyaio/arka/constants"
-	"github.com/jackc/pgconn"
-	"gorm.io/gorm"
 	"os"
 	"testing"
 
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
+	"github.com/jackc/pgconn"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"gorm.io/gorm"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/constants"
+	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type GormManagerSuite struct {
@@ -25,8 +27,9 @@ type GormManagerSuite struct {
 func (ts *GormManagerSuite) SetupSuite() {
 	dm := dependency.GetManager()
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	ts.gdm = &gormDatabaseManager{
-		cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+		sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 	}
 	ts.gdm.db = ts.gdm.connect()
 
