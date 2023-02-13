@@ -4,9 +4,9 @@ import (
 	"errors"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyQueuingManager = "queueing_manager"
@@ -61,7 +61,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderSQS:
 		mm = &sqsManager{
-			cm:  dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm:  dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 			clm: dm.Get(cloud.DependencyCloudManager).(cloud.Manager),
 		}
 		mm.(*sqsManager).initialize()

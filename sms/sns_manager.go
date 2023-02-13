@@ -1,23 +1,24 @@
 package sms
 
 import (
+	"context"
 	"os"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/sns"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sns"
 
 	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/logger"
 )
 
 type snsManager struct {
-	clm  cloud.Manager
-	snss *sns.SNS
+	clm    cloud.Manager
+	client *sns.Client
 }
 
 func (snsm *snsManager) initialize() {
-	session := snsm.clm.GetSession()
-	snsm.snss = sns.New(session)
+	config := snsm.clm.GetConfig()
+	snsm.client = sns.NewFromConfig(config)
 }
 
 func (snsm snsManager) SendSms(options Options) (interface{}, error) {
@@ -30,7 +31,7 @@ func (snsm snsManager) SendSms(options Options) (interface{}, error) {
 		if os.Getenv("CI") == "true" {
 			return nil, nil
 		}
-		out, err := snsm.snss.Publish(input)
+		out, err := snsm.client.Publish(context.TODO(), input)
 		if err != nil {
 			logger.Log.Error().Err(err).Msgf("failed to send SMS for the mobile number, %s", recipient)
 			continue

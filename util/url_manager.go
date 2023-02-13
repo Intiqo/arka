@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyUrlManager = "url_manager"
@@ -21,7 +21,7 @@ type UrlManager interface {
 func BootstrapUrlManager(provider string) {
 	dm := dependency.GetManager()
 	mus := &multiUrlManager{
-		cm:       dm.Get(config.DependencyConfigManager).(config.Manager),
+		sm:       dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		provider: provider,
 	}
 	mus.initialize()

@@ -7,8 +7,8 @@ import (
 
 	"github.com/newrelic/go-agent/v3/newrelic"
 
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const appNameKey = "APP_NAME"
@@ -16,7 +16,7 @@ const newRelicLicenseKey = "NEW_RELIC_LICENSE"
 const enableMonitoringKey = "ENABLE_MONITORING"
 
 type newRelicManager struct {
-	cm config.Manager
+	sm secrets.Manager
 
 	app *newrelic.Application
 }
@@ -25,7 +25,7 @@ func (c *newRelicManager) initialize() {
 	if os.Getenv("CI") == "true" {
 		return
 	}
-	enabledMonitoringConfig := strings.TrimSpace(c.cm.GetValueForKey(enableMonitoringKey))
+	enabledMonitoringConfig := strings.TrimSpace(c.sm.GetValueForKey(enableMonitoringKey))
 	enableMonitoring, err := strconv.ParseBool(enabledMonitoringConfig)
 	if err != nil {
 		logger.Log.Error().Err(err).Msg("failed to parse new relic configuration")
@@ -35,8 +35,8 @@ func (c *newRelicManager) initialize() {
 		logger.Log.Error().Err(err).Msg("monitoring not enabled")
 		return
 	}
-	appName := strings.TrimSpace(c.cm.GetValueForKey(appNameKey))
-	license := strings.TrimSpace(c.cm.GetValueForKey(newRelicLicenseKey))
+	appName := strings.TrimSpace(c.sm.GetValueForKey(appNameKey))
+	license := strings.TrimSpace(c.sm.GetValueForKey(newRelicLicenseKey))
 	app, err := newrelic.NewApplication(
 		newrelic.ConfigAppName(appName),
 		newrelic.ConfigLicense(license),

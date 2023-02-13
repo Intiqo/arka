@@ -1,34 +1,34 @@
 package queuing
 
 import (
+	"context"
 	"encoding/json"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/sqs"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const regionKey = "AWS_REGION"
 
 type sqsManager struct {
-	cm      config.Manager
-	clm     cloud.Manager
-	session *session.Session
-	region  string
+	sm     secrets.Manager
+	clm    cloud.Manager
+	client *sqs.Client
+	region string
 }
 
 func (s *sqsManager) initialize() {
-	s.session = s.clm.GetSession()
-	s.region = s.cm.GetValueForKey(regionKey)
+	config := s.clm.GetConfig()
+	s.region = s.sm.GetValueForKey(regionKey)
+	s.client = sqs.NewFromConfig(config)
 }
 
 func (s sqsManager) SendMessage(options SendOptions) error {
-	svc := sqs.New(s.session)
-	queueUrl, err := svc.GetQueueUrl(&sqs.GetQueueUrlInput{
+	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
 	})
 	if err != nil {
@@ -40,7 +40,7 @@ func (s sqsManager) SendMessage(options SendOptions) error {
 		return err
 	}
 
-	_, err = svc.SendMessage(&sqs.SendMessageInput{
+	_, err = s.client.SendMessage(context.TODO(), &sqs.SendMessageInput{
 		MessageBody:    aws.String(string(body)),
 		QueueUrl:       queueUrl.QueueUrl,
 		MessageGroupId: aws.String(options.GroupId),
@@ -55,8 +55,7 @@ func (s sqsManager) SendMessage(options SendOptions) error {
 
 func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, error) {
 	var response ReceiveResponse
-	svc := sqs.New(s.session)
-	queueUrl, err := svc.GetQueueUrl(&sqs.GetQueueUrlInput{
+	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
 	})
 	if err != nil {
@@ -84,11 +83,11 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 		options.NumberOfMessages = 10
 	}
 
-	result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
+	result, err := s.client.ReceiveMessage(context.TODO(), &sqs.ReceiveMessageInput{
 		QueueUrl:            queueUrl.QueueUrl,
-		MaxNumberOfMessages: aws.Int64(options.NumberOfMessages),
-		VisibilityTimeout:   aws.Int64(options.DelayTimeout),
-		WaitTimeSeconds:     aws.Int64(options.WaitTimeSeconds),
+		MaxNumberOfMessages: int32(options.NumberOfMessages),
+		VisibilityTimeout:   int32(options.DelayTimeout),
+		WaitTimeSeconds:     int32(options.WaitTimeSeconds),
 	})
 	if err != nil {
 		return response, err
@@ -116,15 +115,14 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 }
 
 func (s sqsManager) DeleteMessage(options DeleteOptions) error {
-	svc := sqs.New(s.session)
-	queueUrl, err := svc.GetQueueUrl(&sqs.GetQueueUrlInput{
+	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
 	})
 	if err != nil {
 		return err
 	}
 
-	_, err = svc.DeleteMessage(&sqs.DeleteMessageInput{
+	_, err = s.client.DeleteMessage(context.TODO(), &sqs.DeleteMessageInput{
 		QueueUrl:      queueUrl.QueueUrl,
 		ReceiptHandle: aws.String(options.MessageHandle),
 	})

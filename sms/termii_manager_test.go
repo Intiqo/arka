@@ -10,6 +10,7 @@ import (
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type TermiiManagerTestSuite struct {
@@ -25,6 +26,7 @@ func TestTermiiManager(t *testing.T) {
 func (ts *TermiiManagerTestSuite) SetupSuite() {
 	err := os.Setenv("CI", "true")
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	require.NoError(ts.T(), err)
 	Bootstrap(ProviderTermii)
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)

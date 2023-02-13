@@ -2,11 +2,12 @@ package database
 
 import (
 	"errors"
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/logger"
+
 	"gorm.io/gorm"
 
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyDatabaseManager = "database_manager"
@@ -37,7 +38,7 @@ func Bootstrap(providerOrm string) {
 	switch providerOrm {
 	case ProviderGorm:
 		dm = &gormDatabaseManager{
-			cm: c.Get(config.DependencyConfigManager).(config.Manager),
+			sm: c.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		dm.(*gormDatabaseManager).initialize()
 	default:

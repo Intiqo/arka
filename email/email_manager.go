@@ -4,9 +4,9 @@ import (
 	"errors"
 
 	"github.com/adwitiyaio/arka/cloud"
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyEmailManager = "email_manager"
@@ -40,12 +40,11 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderMailgun:
 		m = &mailgunManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		m.(*mailgunManager).initialize()
 	case ProviderSes:
 		m = &sesManager{
-			cm:  dm.Get(config.DependencyConfigManager).(config.Manager),
 			clm: dm.Get(cloud.DependencyCloudManager).(cloud.Manager),
 		}
 		m.(*sesManager).initialize()

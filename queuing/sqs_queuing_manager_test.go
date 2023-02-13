@@ -12,6 +12,7 @@ import (
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type testData struct {
@@ -33,6 +34,7 @@ func TestSqsManager(t *testing.T) {
 func (ts *SqsManagerTestSuite) SetupSuite() {
 	dm := dependency.GetManager()
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	cloud.Bootstrap(cloud.ProviderAws)
 	Bootstrap(ProviderSQS)
 	ts.m = dm.Get(DependencyQueuingManager).(Manager)

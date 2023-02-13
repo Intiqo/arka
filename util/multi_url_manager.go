@@ -1,12 +1,13 @@
 package util
 
 import (
-	"github.com/adwitiyaio/arka/config"
 	"github.com/go-resty/resty/v2"
+
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type multiUrlManager struct {
-	cm       config.Manager
+	sm       secrets.Manager
 	provider string
 
 	client *resty.Client

@@ -12,6 +12,7 @@ import (
 	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type FileManagerTestSuite struct {
@@ -26,6 +27,7 @@ func TestFileManager(t *testing.T) {
 func (ts *FileManagerTestSuite) SetupSuite() {
 	dm := dependency.GetManager()
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	cloud.Bootstrap(cloud.ProviderAws)
 	Bootstrap(ProviderAwsS3)
 	ts.flm = dm.Get(DependencyFileManager).(Manager)

@@ -5,22 +5,20 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/adwitiyaio/arka/exception"
-
-	"github.com/adwitiyaio/arka/constants"
-
 	"github.com/jackc/pgconn"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/constants"
+	"github.com/adwitiyaio/arka/exception"
 	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const ErrorEntityAssociated = `Not deleted. %s is associated with other records.`
 
 type gormDatabaseManager struct {
-	cm config.Manager
+	sm secrets.Manager
 	db *gorm.DB
 }
 
@@ -60,16 +58,16 @@ func (gdm gormDatabaseManager) TranslateError(err error, ent string) error {
 }
 
 func (gdm gormDatabaseManager) connect() *gorm.DB {
-	host := strings.TrimSpace(gdm.cm.GetValueForKey(dbHostKey))
-	portEnv := strings.TrimSpace(gdm.cm.GetValueForKey(dbPortKey))
+	host := strings.TrimSpace(gdm.sm.GetValueForKey(dbHostKey))
+	portEnv := strings.TrimSpace(gdm.sm.GetValueForKey(dbPortKey))
 	port, err := strconv.Atoi(portEnv)
 	if err != nil {
 		logger.Log.Warn().Str("port", portEnv).Msg("failed to parse db port from environment, resorting to default")
 		port = 5432
 	}
-	database := strings.TrimSpace(gdm.cm.GetValueForKey(dbDatabaseKey))
-	user := strings.TrimSpace(gdm.cm.GetValueForKey(dbUserKey))
-	password := strings.TrimSpace(gdm.cm.GetValueForKey(dbPasswordKey))
+	database := strings.TrimSpace(gdm.sm.GetValueForKey(dbDatabaseKey))
+	user := strings.TrimSpace(gdm.sm.GetValueForKey(dbUserKey))
+	password := strings.TrimSpace(gdm.sm.GetValueForKey(dbPasswordKey))
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", host, user, password, database, port)
 

@@ -2,13 +2,15 @@ package cache
 
 import (
 	"fmt"
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/constants"
-	"github.com/adwitiyaio/arka/logger"
-	"github.com/go-redis/redis"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/go-redis/redis"
+
+	"github.com/adwitiyaio/arka/constants"
+	"github.com/adwitiyaio/arka/logger"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const hostKey = "REDIS_HOST"
@@ -17,15 +19,15 @@ const passwordKey = "REDIS_PASSWORD"
 const databaseKey = "REDIS_DATABASE"
 
 type redisCacheManager struct {
-	cm     config.Manager
+	sm     secrets.Manager
 	client *redis.Client
 }
 
 func (r *redisCacheManager) initialize() {
-	host := r.cm.GetValueForKey(hostKey)
-	port := r.cm.GetValueForKey(portKey)
-	pass := r.cm.GetValueForKey(passwordKey)
-	db, err := strconv.Atoi(r.cm.GetValueForKey(databaseKey))
+	host := r.sm.GetValueForKey(hostKey)
+	port := r.sm.GetValueForKey(portKey)
+	pass := r.sm.GetValueForKey(passwordKey)
+	db, err := strconv.Atoi(r.sm.GetValueForKey(databaseKey))
 	if err != nil {
 		db = 1
 	}

@@ -1,8 +1,8 @@
 package monitoring
 
 import (
-	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyMonitoringManager = "monitoring_manager"
@@ -19,7 +19,7 @@ func Bootstrap(provider string) {
 	switch provider {
 	case ProviderNewRelic:
 		nrm = &newRelicManager{
-			cm: dm.Get(config.DependencyConfigManager).(config.Manager),
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		nrm.(*newRelicManager).initialize()
 	}

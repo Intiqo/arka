@@ -4,15 +4,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/adwitiyaio/arka/constants"
-
 	"github.com/stretchr/testify/assert"
-
-	"github.com/adwitiyaio/arka/config"
-	"github.com/adwitiyaio/arka/dependency"
-
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+
+	"github.com/adwitiyaio/arka/config"
+	"github.com/adwitiyaio/arka/constants"
+	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type RedisManagerTestSuite struct {
@@ -27,6 +26,7 @@ func TestRedisManager(t *testing.T) {
 func (ts *RedisManagerTestSuite) SetupSuite() {
 	dm := dependency.GetManager()
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 
 	// For coverage, set the db to an invalid integer
 	err := os.Setenv("REDIS_DATABASE", "invalid")
