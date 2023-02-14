@@ -18,6 +18,8 @@ const dbDatabaseKey = "DB_DATABASE"
 const dbUserKey = "DB_USER"
 const dbPasswordKey = "DB_PASSWORD"
 
+const dbHostsKey = "DB_HOSTS"
+
 const ProviderGorm = "GORM"
 
 type Manager interface {
@@ -32,6 +34,7 @@ type Manager interface {
 }
 
 // Bootstrap ... Bootstraps the database manager
+// If you need to connect to multiple database hosts, check the sample env config for the key `DB_HOSTS`
 func Bootstrap(providerOrm string) {
 	c := dependency.GetManager()
 	var dm interface{}

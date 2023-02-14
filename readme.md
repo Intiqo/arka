@@ -35,7 +35,7 @@ go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
 
 ### Visual Studio Code
 
-- You can use the built in `Test Explorer` panel to run tests. 
+- You can use the built in `Test Explorer` panel to run tests.
 
 ### JetBrains IDEs
 
@@ -44,3 +44,8 @@ go test -v `go list ./...` -coverprofile=coverage.out -covermode=atomic
 ## Developing
 
 See [Code Structure](./code-structure.md) for more details
+
+
+## Features
+
+See [Featured](./FEATURES.md) for more details
