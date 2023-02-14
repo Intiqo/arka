@@ -49,6 +49,16 @@ func (ts GormManagerSuite) Test_Connect() {
 	})
 }
 
+func (ts GormManagerSuite) Test_ConnectMultiple() {
+	ts.Run("invalid port from config", func() {
+		dm := dependency.GetManager()
+		sm := dm.Get(secrets.DependencySecretsManager).(secrets.Manager)
+		hosts := sm.GetValueForKey(dbHostsKey)
+		db := ts.gdm.connectMultiple(hosts)
+		assert.NotNil(ts.T(), db)
+	})
+}
+
 func (ts GormManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
 		db := ts.gdm.GetInstance()

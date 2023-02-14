@@ -70,6 +70,8 @@ jobs:
           DB_USER=${DB_USER}
           DB_PASSWORD=${DB_PASSWORD}
 
+          DB_HOSTS=${DB_HOSTS}
+
           MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
           MAILGUN_HOST=${MAILGUN_HOST}
           MAILGUN_API_KEY=${MAILGUN_HOST}
@@ -122,6 +124,7 @@ jobs:
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOSTS: ${{ secrets.DB_HOSTS }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
           MAILGUN_HOST: ${{ secrets.MAILGUN_HOST }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}

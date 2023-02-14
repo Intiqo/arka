@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgconn"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/plugin/dbresolver"
 
 	"github.com/adwitiyaio/arka/constants"
 	"github.com/adwitiyaio/arka/exception"
@@ -23,6 +24,11 @@ type gormDatabaseManager struct {
 }
 
 func (gdm *gormDatabaseManager) initialize() {
+	hosts := gdm.sm.GetValueForKey(dbHostsKey)
+	if hosts != "" {
+		gdm.db = gdm.connectMultiple(hosts)
+		return
+	}
 	gdm.db = gdm.connect()
 }
 
@@ -76,6 +82,64 @@ func (gdm gormDatabaseManager) connect() *gorm.DB {
 	if err != nil {
 		logger.Log.Panic().Err(err).Stack().Msg("unable to connect to database")
 	}
+
+	return db
+}
+
+func (gdm gormDatabaseManager) connectMultiple(hostsStr string) *gorm.DB {
+	dbHosts := strings.Split(hostsStr, ",")
+	if len(dbHosts) < 1 {
+		logger.Log.Panic().Stack().Msg("no hosts provided")
+	}
+
+	firstSourceDsn := ""
+	sources := make([]gorm.Dialector, 0)
+	replicas := make([]gorm.Dialector, 0)
+	for _, dbHost := range dbHosts {
+		dbHost = strings.TrimSpace(dbHost)
+
+		replParam := strings.Split(dbHost, "?")[1]
+		repl := strings.Split(replParam, "=")[1]
+		isReplica, err := strconv.ParseBool(repl)
+		if err != nil {
+			isReplica = false
+		}
+
+		database := strings.Split(strings.Split(dbHost, "?")[0], "/")[1]
+
+		host := strings.Split(strings.Split(strings.Split(strings.Split(dbHost, "?")[0], "/")[0], "@")[1], ":")[0]
+		portEnv := strings.Split(strings.Split(strings.Split(strings.Split(dbHost, "?")[0], "/")[0], "@")[1], ":")[1]
+		port, err := strconv.Atoi(portEnv)
+		if err != nil {
+			logger.Log.Warn().Str("port", portEnv).Msg("failed to parse db port from environment, resorting to default")
+			port = 5432
+		}
+
+		user := strings.Split(strings.Split(strings.Split(strings.Split(dbHost, "?")[0], "/")[0], "@")[0], ":")[0]
+		password := strings.Split(strings.Split(strings.Split(strings.Split(dbHost, "?")[0], "/")[0], "@")[0], ":")[1]
+
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", host, user, password, database, port)
+
+		if isReplica {
+			replicas = append(replicas, postgres.Open(dsn))
+		} else {
+			sources = append(sources, postgres.Open(dsn))
+			if firstSourceDsn == "" {
+				firstSourceDsn = dsn
+			}
+		}
+	}
+
+	db, err := gorm.Open(postgres.Open(firstSourceDsn), &gorm.Config{})
+
+	if err != nil {
+		logger.Log.Panic().Err(err).Stack().Msg("unable to connect to database")
+	}
+
+	db.Use(dbresolver.Register(dbresolver.Config{
+		Sources:  sources,
+		Replicas: replicas,
+	}))
 
 	return db
 }
