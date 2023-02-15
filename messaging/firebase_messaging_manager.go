@@ -2,6 +2,7 @@ package messaging
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	firebase "firebase.google.com/go/v4"
@@ -25,8 +26,8 @@ type firebaseManager struct {
 	client *messaging.Client
 }
 
-func (f *firebaseManager) initialize() {
-	fbConfigPath := f.sm.GetValueForKey(messagingFirebaseConfigPath)
+func (m *firebaseManager) initialize() {
+	fbConfigPath := m.sm.GetValueForKey(messagingFirebaseConfigPath)
 	opt := option.WithCredentialsFile(fbConfigPath)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
@@ -36,23 +37,28 @@ func (f *firebaseManager) initialize() {
 	if os.Getenv("FIREBASE_MESSAGING_DISABLED") == "true" {
 		return
 	}
-	f.client, err = app.Messaging(ctx)
+	m.client, err = app.Messaging(ctx)
 	if err != nil {
 		logger.Log.Fatal().Err(err).Msg("failed to get firebase messaging client")
 	}
 }
 
-func (f firebaseManager) SendNotification(message Message) (interface{}, []string) {
+func (m *firebaseManager) SendNotification(message Message) (interface{}, []string, error) {
+	dataMap := make(map[string]string)
+	for key, value := range message.Data {
+		strValue := fmt.Sprintf("%v", value)
+		dataMap[key] = strValue
+	}
 	msg := &messaging.MulticastMessage{
 		Tokens: message.Tokens,
-		Data:   message.Data,
+		Data:   dataMap,
 		Notification: &messaging.Notification{
 			Title:    message.Title,
 			Body:     message.Body,
 			ImageURL: message.ImageUrl,
 		},
 		Android: &messaging.AndroidConfig{
-			Data: message.Data,
+			Data: dataMap,
 			Notification: &messaging.AndroidNotification{
 				Title:     message.Title,
 				Body:      message.Body,
@@ -70,9 +76,10 @@ func (f firebaseManager) SendNotification(message Message) (interface{}, []strin
 		},
 	}
 
-	br, err := f.client.SendMulticast(context.Background(), msg)
+	br, err := m.client.SendMulticast(context.Background(), msg)
 	if err != nil {
 		logger.Log.Error().Err(err).Msgf("failed to send multicast message")
+		return nil, nil, err
 	}
 
 	if br.SuccessCount > 0 {
@@ -88,7 +95,7 @@ func (f firebaseManager) SendNotification(message Message) (interface{}, []strin
 			if !resp.Success {
 				// The order of responses corresponds to the order of the registration tokens.
 				failedTokens = append(failedTokens, message.Tokens[idx])
-				logger.Log.Error().Err(resp.Error).Msgf("failed to send push notification")
+				logger.Log.Error().Err(resp.Error).Msgf("failed to send push notification to device")
 			}
 		}
 	}
@@ -100,5 +107,5 @@ func (f firebaseManager) SendNotification(message Message) (interface{}, []strin
 			Success:   resp.Success,
 		})
 	}
-	return responseData, failedTokens
+	return responseData, failedTokens, nil
 }
