@@ -1,46 +1,43 @@
 package messaging
 
 import (
-	"errors"
-
 	"github.com/adwitiyaio/arka/dependency"
-	"github.com/adwitiyaio/arka/logger"
 	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencyMessagingManager = "messaging_manager"
 
 const ProviderFirebase = "firebase"
+const ProviderOneSignal = "onesignal"
 
 type Message struct {
 	Title    string
 	Body     string
 	ImageUrl string
-	Data     map[string]string
+	Data     map[string]interface{}
 	Tokens   []string
+	Channel  string
 }
 
 type Manager interface {
 	// SendNotification ... Send a push notification
 	//
-	// @param {Message} message A message object
-	// @return {[]string} Returns a list of failed tokens
-	SendNotification(message Message) (interface{}, []string)
+	// Currently supported providers are:
+	//
+	// - firebase
+	//
+	// - onesignal
+	//
+	// Returns the raw response, a list of failed tokens and any error
+	SendNotificationWithProvider(message Message, provider string) (interface{}, []string, error)
 }
 
-// Bootstrap ... Bootstraps the cloud manager
-func Bootstrap(provider string) {
+// Bootstrap ... Bootstrap the messaging manager
+func Bootstrap() {
 	dm := dependency.GetManager()
-	var mm interface{}
-	switch provider {
-	case ProviderFirebase:
-		mm = &firebaseManager{
-			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
-		}
-		mm.(*firebaseManager).initialize()
-	default:
-		err := errors.New("messaging provider not implemented")
-		logger.Log.Fatal().Err(err).Str("provider", provider)
+	mm := &multiManager{
+		sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 	}
+	mm.initialize()
 	dm.Register(DependencyMessagingManager, mm)
 }

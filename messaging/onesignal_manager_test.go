@@ -14,17 +14,17 @@ import (
 	"github.com/adwitiyaio/arka/secrets"
 )
 
-type FirebaseMessagingManagerTestSuite struct {
+type OneSignalManagerTestSuite struct {
 	suite.Suite
 
 	m Manager
 }
 
-func TestFirebaseMessagingManager(t *testing.T) {
-	suite.Run(t, new(FirebaseMessagingManagerTestSuite))
+func TestOneSignalManager(t *testing.T) {
+	suite.Run(t, new(OneSignalManagerTestSuite))
 }
 
-func (ts *FirebaseMessagingManagerTestSuite) SetupSuite() {
+func (ts *OneSignalManagerTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
 	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	err := os.Setenv("CI", "true")
@@ -33,7 +33,7 @@ func (ts *FirebaseMessagingManagerTestSuite) SetupSuite() {
 	ts.m = dependency.GetManager().Get(DependencyMessagingManager).(Manager)
 }
 
-func (ts *FirebaseMessagingManagerTestSuite) Test_firebaseMessagingManager_SendNotification() {
+func (ts *OneSignalManagerTestSuite) Test_oneSignalManager_SendNotification() {
 	ts.Run("success - invalid tokens", func() {
 		message := Message{
 			Title:    gofakeit.JobTitle(),
@@ -41,12 +41,11 @@ func (ts *FirebaseMessagingManagerTestSuite) Test_firebaseMessagingManager_SendN
 			ImageUrl: gofakeit.ImageURL(20, 30),
 			Data:     map[string]interface{}{"test": "test"},
 			Tokens:   []string{gofakeit.UUID()},
-			Channel:  "test",
 		}
 
-		res, failedTokens, err := ts.m.SendNotificationWithProvider(message, ProviderFirebase)
+		res, failedTokens, err := ts.m.SendNotificationWithProvider(message, ProviderOneSignal)
 		require.NoError(ts.T(), err)
-		assert.Equal(ts.T(), message.Tokens, failedTokens)
-		assert.False(ts.T(), res.([]messageResponse)[0].Success)
+		assert.Equal(ts.T(), len(message.Tokens), len(failedTokens))
+		assert.NotNil(ts.T(), res)
 	})
 }
