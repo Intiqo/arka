@@ -65,9 +65,13 @@ func (m *oneSignalManager) SendNotification(message Message) (interface{}, []str
 		return r, nil, err
 	}
 
-	if resp.Errors.InvalidIdentifierError != nil && resp.Errors.InvalidIdentifierError.InvalidPlayerIds != nil {
+	if resp != nil && resp.Errors != nil && resp.Errors.InvalidIdentifierError != nil && resp.Errors.InvalidIdentifierError.InvalidPlayerIds != nil {
 		return resp, resp.Errors.InvalidIdentifierError.InvalidExternalUserIds, nil
 	}
 
-	return resp, *resp.Errors.ArrayOfString, nil
+	if resp != nil && resp.Errors != nil && resp.Errors.ArrayOfString != nil {
+		return resp, *resp.Errors.ArrayOfString, nil
+	}
+
+	return resp, []string{}, nil
 }
