@@ -8,6 +8,7 @@ import (
 const DependencyUrlManager = "url_manager"
 
 const UrlProviderKutt = "kutt"
+const UrlProviderSmallrLinks = "smallr_links"
 
 type UrlManager interface {
 	// Shorten ... Shortens a URL

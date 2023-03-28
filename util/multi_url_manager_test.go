@@ -29,12 +29,19 @@ func (ts *UrlManagerTestSuite) SetupSuite() {
 	secrets.Bootstrap(secrets.ProviderEnvironment, "")
 	err := os.Setenv("CI", "true")
 	require.NoError(ts.T(), err)
-	BootstrapUrlManager(UrlProviderKutt)
-	ts.m = dependency.GetManager().Get(DependencyUrlManager).(UrlManager)
 }
 
 func (ts *UrlManagerTestSuite) Test_multiUrlShortener_Shorten() {
-	ts.Run("success - shorten url", func() {
+	ts.Run("success - shorten url - kutt", func() {
+		BootstrapUrlManager(UrlProviderKutt)
+		ts.m = dependency.GetManager().Get(DependencyUrlManager).(UrlManager)
+		res, err := ts.m.Shorten(gofakeit.URL())
+		assert.NoError(ts.T(), err)
+		assert.NotNil(ts.T(), res)
+	})
+	ts.Run("success - shorten url - smallr links", func() {
+		BootstrapUrlManager(UrlProviderSmallrLinks)
+		ts.m = dependency.GetManager().Get(DependencyUrlManager).(UrlManager)
 		res, err := ts.m.Shorten(gofakeit.URL())
 		assert.NoError(ts.T(), err)
 		assert.NotNil(ts.T(), res)
@@ -43,6 +50,8 @@ func (ts *UrlManagerTestSuite) Test_multiUrlShortener_Shorten() {
 
 func (ts *UrlManagerTestSuite) Test_multiUrlShortener_CreateDeepLink() {
 	ts.Run("success", func() {
+		BootstrapUrlManager(UrlProviderSmallrLinks)
+		ts.m = dependency.GetManager().Get(DependencyUrlManager).(UrlManager)
 		res, err := ts.m.CreateDeepLink(gofakeit.URL())
 		assert.NoError(ts.T(), err)
 		assert.NotNil(ts.T(), res)
