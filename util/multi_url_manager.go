@@ -13,12 +13,18 @@ type multiUrlManager struct {
 	client *resty.Client
 	fbp    *firebaseDeepLinkProvider
 	kp     *kuttProvider
+	slp    *smallrLinksProvider
 }
 
 func (mus *multiUrlManager) initialize() {
 	mus.client = resty.New()
 	mus.initializeFirebase()
-	mus.initializeKutt()
+	switch mus.provider {
+	case UrlProviderKutt:
+		mus.initializeKutt()
+	case UrlProviderSmallrLinks:
+		mus.initializeSmallrLinks()
+	}
 }
 
 func (mus *multiUrlManager) CreateDeepLink(url string) (string, error) {
@@ -26,5 +32,11 @@ func (mus *multiUrlManager) CreateDeepLink(url string) (string, error) {
 }
 
 func (mus *multiUrlManager) Shorten(url string) (string, error) {
+	switch mus.provider {
+	case UrlProviderKutt:
+		return mus.shortenWithKutt(url)
+	case UrlProviderSmallrLinks:
+		return mus.shortenWithSmallrLinks(url)
+	}
 	return mus.shortenWithKutt(url)
 }
