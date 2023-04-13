@@ -2,12 +2,16 @@ package database
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgconn"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	gLogger "gorm.io/gorm/logger"
 	"gorm.io/plugin/dbresolver"
 
 	"github.com/adwitiyaio/arka/constants"
@@ -77,7 +81,20 @@ func (gdm gormDatabaseManager) connect() *gorm.DB {
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", host, user, password, database, port)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	gormLogger := gLogger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		gLogger.Config{
+			SlowThreshold:             time.Second,
+			LogLevel:                  gLogger.Silent,
+			IgnoreRecordNotFoundError: true,
+			ParameterizedQueries:      true,
+			Colorful:                  false,
+		},
+	)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: gormLogger,
+	})
 
 	if err != nil {
 		logger.Log.Panic().Err(err).Stack().Msg("unable to connect to database")
