@@ -21,5 +21,12 @@ func (r *localCacheManager) Get(key string) (string, error) {
 	if r.store[key] == nil {
 		return "", nil
 	}
+	val := r.store[key]
+	switch val.(type) {
+	case string:
+		return r.store[key].(string), nil
+	case []uint8:
+		return string(r.store[key].([]uint8)), nil
+	}
 	return r.store[key].(string), nil
 }
