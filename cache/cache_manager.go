@@ -11,6 +11,7 @@ import (
 const DependencyCacheManager = "cache_manager"
 
 const ProviderRedis = "REDIS"
+const ProviderLocal = "LOCAL"
 
 type Manager interface {
 	// GetStatus ... Returns the current status of the cache system connection
@@ -33,6 +34,9 @@ func Bootstrap(provider string) {
 			sm: c.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		r.(*redisCacheManager).initialize()
+	case ProviderLocal:
+		r = &localCacheManager{}
+		r.(*localCacheManager).initialize()
 	default:
 		err := errors.New("cache provider not implemented")
 		logger.Log.Fatal().Err(err).Str("provider", provider)
