@@ -25,7 +25,7 @@ require (
 	github.com/nyaruka/phonenumbers v1.0.69
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/rs/zerolog v1.22.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	github.com/stripe/stripe-go/v72 v72.51.0
 	github.com/xuri/excelize/v2 v2.4.1
 	google.golang.org/api v0.103.0
