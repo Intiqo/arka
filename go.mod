@@ -26,7 +26,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/rs/zerolog v1.22.0
 	github.com/stretchr/testify v1.8.1
-	github.com/stripe/stripe-go/v72 v72.51.0
+	github.com/stripe/stripe-go/v72 v72.122.0
 	github.com/xuri/excelize/v2 v2.4.1
 	google.golang.org/api v0.103.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
