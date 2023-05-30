@@ -53,8 +53,8 @@ github.com/MicahParks/keyfunc v1.9.0 h1:lhKd5xrFHLNOWrDc4Tyb/Q1AJ4LCzQ48GVJyVIID
 github.com/MicahParks/keyfunc v1.9.0/go.mod h1:IdnCilugA0O/99dW+/MkvlyrsX8+L8+x95xuVNtM5jw=
 github.com/OneSignal/onesignal-go-api v1.0.4 h1:qSfVA5BMVEM92CSO6oeiQHPjxT1URcFpTGTMH8r8qLg=
 github.com/OneSignal/onesignal-go-api v1.0.4/go.mod h1:DtIjUAJD9iw/clqpJ7mGff1soWkgbs/2m7Or85W/I7c=
-github.com/Uchencho/go-termii v1.0.2 h1:Qed/Innbi0U3+cK1cJc7DlAo0h/ykABwgIT6R79/GZE=
-github.com/Uchencho/go-termii v1.0.2/go.mod h1:zyaPjb/BV0FTan6z+Imw/jL/yIorXZKnKqzY4pTNDDY=
+github.com/Uchencho/go-termii v1.0.4 h1:N8jH7gZpSEy0mzxm1b44i8+CRhHPlOQLAwlauR6juIk=
+github.com/Uchencho/go-termii v1.0.4/go.mod h1:zyaPjb/BV0FTan6z+Imw/jL/yIorXZKnKqzY4pTNDDY=
 github.com/aws/aws-sdk-go-v2 v1.17.4/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2 v1.17.5/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2 v1.17.8 h1:GMupCNNI7FARX27L7GjCJM8NgivWbRgpjNI/hOQjFS8=

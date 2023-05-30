@@ -5,7 +5,7 @@ go 1.20
 require (
 	firebase.google.com/go/v4 v4.11.0
 	github.com/OneSignal/onesignal-go-api v1.0.4
-	github.com/Uchencho/go-termii v1.0.2
+	github.com/Uchencho/go-termii v1.0.4
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20
