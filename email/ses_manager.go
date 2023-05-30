@@ -91,6 +91,11 @@ func (sm sesManager) sendRawEmail(options Options) (interface{}, error) {
 		msg.SetHeader("bcc", options.Bcc...)
 	}
 
+	// Set sender name
+	if options.SenderName == "" {
+		options.SenderName = options.Sender
+	}
+
 	msg.SetAddressHeader("From", options.Sender, options.SenderName)
 	msg.SetHeader("To", options.To...)
 	msg.SetHeader("Subject", options.Subject)
