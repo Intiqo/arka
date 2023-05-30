@@ -17,6 +17,7 @@ const ProviderSes = "SES"
 // Options ... Defines the structure for the fields of an email
 type Options struct {
 	Sender         string
+	SenderName     string
 	Subject        string
 	Html           string
 	Text           string
