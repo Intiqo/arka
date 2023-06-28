@@ -98,6 +98,7 @@ func (sm sesManager) sendRawEmail(options Options) (interface{}, error) {
 
 	msg.SetAddressHeader("From", options.Sender, options.SenderName)
 	msg.SetHeader("To", options.To...)
+	msg.SetHeader("Reply-To", options.ReplyToAddress)
 	msg.SetHeader("Subject", options.Subject)
 	msg.SetBody("text/html", options.Html)
 
