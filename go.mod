@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.3
-	github.com/aws/aws-sdk-go-v2/service/sns v1.20.11
+	github.com/aws/aws-sdk-go-v2/service/sns v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.20.4
 	github.com/brianvoe/gofakeit/v6 v6.22.0
 	github.com/gabriel-vasile/mimetype v1.4.2
