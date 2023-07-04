@@ -20,7 +20,7 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/jackc/pgconn v1.10.0
 	github.com/joho/godotenv v1.5.1
-	github.com/mailgun/mailgun-go/v4 v4.8.2
+	github.com/mailgun/mailgun-go/v4 v4.9.2
 	github.com/mitchellh/mapstructure v1.4.3
 	github.com/nyaruka/phonenumbers v1.0.69
 	github.com/robfig/cron/v3 v3.0.0
@@ -54,6 +54,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.2 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
+	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -79,7 +80,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/googleapis/gax-go/v2 v2.10.0 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
