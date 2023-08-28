@@ -51,7 +51,7 @@ func (ts *PgxManagerSuite) Test_Connect() {
 
 func (ts *PgxManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
-		db := ts.pdm.GetInstance()
+		db := ts.pdm.GetInstance().(*pgxpool.Pool)
 		assert.NotNil(ts.T(), db)
 	})
 }

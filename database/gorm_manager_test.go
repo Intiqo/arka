@@ -61,7 +61,7 @@ func (ts *GormManagerSuite) Test_ConnectMultiple() {
 
 func (ts *GormManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
-		db := ts.gdm.GetInstance()
+		db := ts.gdm.GetInstance().(*gorm.DB)
 		assert.NotNil(ts.T(), db)
 	})
 }
