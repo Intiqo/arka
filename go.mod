@@ -1,6 +1,6 @@
 module github.com/adwitiyaio/arka
 
-go 1.20
+go 1.21.0
 
 require (
 	firebase.google.com/go/v4 v4.11.0
@@ -101,7 +101,7 @@ require (
 	github.com/richardlehane/msoleps v1.0.1 // indirect
 	github.com/xuri/efp v0.0.0-20210322160811-ab561f5b45e3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/crypto v0.9.0
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect

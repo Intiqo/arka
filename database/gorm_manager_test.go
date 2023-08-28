@@ -40,7 +40,7 @@ func TestGormManager(t *testing.T) {
 	suite.Run(t, new(GormManagerSuite))
 }
 
-func (ts GormManagerSuite) Test_Connect() {
+func (ts *GormManagerSuite) Test_Connect() {
 	ts.Run("invalid port from config", func() {
 		err := os.Setenv(dbPortKey, "unknown")
 		require.NoError(ts.T(), err)
@@ -49,7 +49,7 @@ func (ts GormManagerSuite) Test_Connect() {
 	})
 }
 
-func (ts GormManagerSuite) Test_ConnectMultiple() {
+func (ts *GormManagerSuite) Test_ConnectMultiple() {
 	ts.Run("invalid port from config", func() {
 		dm := dependency.GetManager()
 		sm := dm.Get(secrets.DependencySecretsManager).(secrets.Manager)
@@ -59,21 +59,21 @@ func (ts GormManagerSuite) Test_ConnectMultiple() {
 	})
 }
 
-func (ts GormManagerSuite) Test_GetInstance() {
+func (ts *GormManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
 		db := ts.gdm.GetInstance()
 		assert.NotNil(ts.T(), db)
 	})
 }
 
-func (ts GormManagerSuite) Test_GetStatus() {
+func (ts *GormManagerSuite) Test_GetStatus() {
 	ts.Run("success - UP", func() {
 		status := ts.gdm.GetStatus()
 		assert.Equal(ts.T(), constants.SystemStatusUp, status)
 	})
 }
 
-func (ts GormManagerSuite) Test_TranslateError() {
+func (ts *GormManagerSuite) Test_TranslateError() {
 	ts.Run("success - entity associated", func() {
 		pgErr := pgconn.PgError{Code: "23503"}
 		err := ts.gdm.TranslateError(&pgErr, "book")
