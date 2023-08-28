@@ -3,6 +3,7 @@ package database
 import (
 	"errors"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"gorm.io/gorm"
 
 	"github.com/adwitiyaio/arka/dependency"
@@ -21,10 +22,15 @@ const dbPasswordKey = "DB_PASSWORD"
 const dbHostsKey = "DB_HOSTS"
 
 const ProviderGorm = "GORM"
+const ProviderPgx = "PGX"
 
-type Manager interface {
+type TDatabase interface {
+	*gorm.DB | *pgxpool.Pool
+}
+
+type Manager[T TDatabase] interface {
 	// GetInstance ... Gets an instance of the database
-	GetInstance() *gorm.DB
+	GetInstance() T
 
 	// GetStatus ... Returns the current status of the database connection
 	GetStatus() string
@@ -44,6 +50,11 @@ func Bootstrap(providerOrm string) {
 			sm: c.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		dm.(*gormDatabaseManager).initialize()
+	case ProviderPgx:
+		dm = &pgxDatabaseManager{
+			sm: c.Get(secrets.DependencySecretsManager).(secrets.Manager),
+		}
+		dm.(*pgxDatabaseManager).initialize()
 	default:
 		err := errors.New("orm provider not implemented")
 		logger.Log.Fatal().Err(err).Str("provider", providerOrm)
