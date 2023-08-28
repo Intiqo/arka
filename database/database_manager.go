@@ -3,9 +3,6 @@ package database
 import (
 	"errors"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-	"gorm.io/gorm"
-
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
 	"github.com/adwitiyaio/arka/secrets"
@@ -24,13 +21,9 @@ const dbHostsKey = "DB_HOSTS"
 const ProviderGorm = "GORM"
 const ProviderPgx = "PGX"
 
-type TDatabase interface {
-	*gorm.DB | *pgxpool.Pool
-}
-
-type Manager[T TDatabase] interface {
+type Manager interface {
 	// GetInstance ... Gets an instance of the database
-	GetInstance() T
+	GetInstance() interface{}
 
 	// GetStatus ... Returns the current status of the database connection
 	GetStatus() string
