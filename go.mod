@@ -3,7 +3,7 @@ module github.com/adwitiyaio/arka
 go 1.21
 
 require (
-	firebase.google.com/go/v4 v4.11.0
+	firebase.google.com/go/v4 v4.12.0
 	github.com/OneSignal/onesignal-go-api v1.0.4
 	github.com/Uchencho/go-termii v1.0.4
 	github.com/aws/aws-sdk-go-v2 v1.21.0
