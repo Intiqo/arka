@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"gorm.io/gorm"
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/constants"
@@ -21,7 +20,6 @@ type GormManagerSuite struct {
 	suite.Suite
 
 	gdm *gormDatabaseManager
-	db  *gorm.DB
 }
 
 func (ts *GormManagerSuite) SetupSuite() {
@@ -61,7 +59,7 @@ func (ts *GormManagerSuite) Test_ConnectMultiple() {
 
 func (ts *GormManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
-		db := ts.gdm.GetInstance().(*gorm.DB)
+		db := ts.gdm.GetInstance()
 		assert.NotNil(ts.T(), db)
 	})
 }

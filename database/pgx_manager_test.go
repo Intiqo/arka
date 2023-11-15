@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/jackc/pgconn"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -21,7 +20,6 @@ type PgxManagerSuite struct {
 	suite.Suite
 
 	pdm *pgxDatabaseManager
-	db  *pgxpool.Pool
 }
 
 func (ts *PgxManagerSuite) SetupSuite() {
@@ -51,7 +49,7 @@ func (ts *PgxManagerSuite) Test_Connect() {
 
 func (ts *PgxManagerSuite) Test_GetInstance() {
 	ts.Run("success", func() {
-		db := ts.pdm.GetInstance().(*pgxpool.Pool)
+		db := ts.pdm.GetInstance()
 		assert.NotNil(ts.T(), db)
 	})
 }

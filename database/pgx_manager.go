@@ -28,7 +28,7 @@ func (pdm *pgxDatabaseManager) initialize() {
 	pdm.db = pdm.connect()
 }
 
-func (pdm *pgxDatabaseManager) GetInstance() interface{} {
+func (pdm *pgxDatabaseManager) GetInstance() *pgxpool.Pool {
 	return pdm.db
 }
 

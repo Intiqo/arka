@@ -3,6 +3,8 @@ package database
 import (
 	"errors"
 
+	"gorm.io/gorm"
+
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/logger"
 	"github.com/adwitiyaio/arka/secrets"
@@ -23,7 +25,7 @@ const ProviderPgx = "PGX"
 
 type Manager interface {
 	// GetInstance ... Gets an instance of the database
-	GetInstance() interface{}
+	GetInstance() *gorm.DB
 
 	// GetStatus ... Returns the current status of the database connection
 	GetStatus() string
