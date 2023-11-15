@@ -3,7 +3,7 @@ module github.com/adwitiyaio/arka
 go 1.21
 
 require (
-	firebase.google.com/go/v4 v4.11.0
+	firebase.google.com/go/v4 v4.12.1
 	github.com/OneSignal/onesignal-go-api v1.0.4
 	github.com/Uchencho/go-termii v1.0.4
 	github.com/aws/aws-sdk-go-v2 v1.22.2
@@ -25,7 +25,7 @@ require (
 	github.com/mailgun/mailgun-go/v4 v4.11.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nyaruka/phonenumbers v1.0.69
-	github.com/robfig/cron/v3 v3.0.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.2
 	github.com/stripe/stripe-go/v72 v72.122.0
@@ -104,14 +104,14 @@ require (
 	github.com/richardlehane/msoleps v1.0.1 // indirect
 	github.com/xuri/efp v0.0.0-20210322160811-ab561f5b45e3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.9.0
-	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230530153820-e85fd2cbaebc // indirect
-	google.golang.org/grpc v1.55.0 // indirect
+	google.golang.org/grpc v1.56.3 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
