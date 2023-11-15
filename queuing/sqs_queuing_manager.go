@@ -27,7 +27,7 @@ func (s *sqsManager) initialize() {
 	s.client = sqs.NewFromConfig(config)
 }
 
-func (s sqsManager) SendMessage(options SendOptions) error {
+func (s *sqsManager) SendMessage(options SendOptions) error {
 	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
 	})
@@ -40,11 +40,16 @@ func (s sqsManager) SendMessage(options SendOptions) error {
 		return err
 	}
 
-	_, err = s.client.SendMessage(context.TODO(), &sqs.SendMessageInput{
-		MessageBody:    aws.String(string(body)),
-		QueueUrl:       queueUrl.QueueUrl,
-		MessageGroupId: aws.String(options.GroupId),
-	})
+	in := sqs.SendMessageInput{
+		MessageBody: aws.String(string(body)),
+		QueueUrl:    queueUrl.QueueUrl,
+	}
+
+	if options.GroupId != "" {
+		in.MessageGroupId = aws.String(options.GroupId)
+	}
+
+	_, err = s.client.SendMessage(context.TODO(), &in)
 
 	if err != nil {
 		return err
@@ -53,7 +58,7 @@ func (s sqsManager) SendMessage(options SendOptions) error {
 	return nil
 }
 
-func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, error) {
+func (s *sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, error) {
 	var response ReceiveResponse
 	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
@@ -114,7 +119,7 @@ func (s sqsManager) ReceiveMessage(options ReceiveOptions) (ReceiveResponse, err
 	return response, nil
 }
 
-func (s sqsManager) DeleteMessage(options DeleteOptions) error {
+func (s *sqsManager) DeleteMessage(options DeleteOptions) error {
 	queueUrl, err := s.client.GetQueueUrl(context.TODO(), &sqs.GetQueueUrlInput{
 		QueueName: aws.String(options.QueueName),
 	})
