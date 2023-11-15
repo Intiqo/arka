@@ -36,7 +36,7 @@ func (gdm *gormDatabaseManager) initialize() {
 	gdm.db = gdm.connect()
 }
 
-func (gdm *gormDatabaseManager) GetInstance() interface{} {
+func (gdm *gormDatabaseManager) GetInstance() *gorm.DB {
 	return gdm.db
 }
 
