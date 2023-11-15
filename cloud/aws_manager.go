@@ -2,6 +2,8 @@ package cloud
 
 import (
 	"context"
+	"log"
+	"log/slog"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsCfg "github.com/aws/aws-sdk-go-v2/config"
@@ -9,7 +11,6 @@ import (
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
-	"github.com/adwitiyaio/arka/logger"
 )
 
 const regionKey = "AWS_REGION"
@@ -36,16 +37,20 @@ func (am *awsManager) initialize() {
 	cm := dm.Get(config.DependencyConfigManager).(config.Manager)
 
 	var err error
-	am.config, err = awsCfg.LoadDefaultConfig(context.TODO())
+	// Try to load credentials from the specified aws profile
+	awsProfile := cm.GetValueForKey("AWS_PROFILE")
+	slog.Info("Loading AWS credentials from profile")
+	am.config, err = awsCfg.LoadDefaultConfig(context.TODO(), awsCfg.WithSharedConfigProfile(awsProfile))
 	if err != nil {
-		logger.Log.Error().Err(err).Msg("failed to load default aws config. Trying with environemt variables")
+		// Fallback to loading credentials from environment variables
+		slog.Info("Loading AWS credentials from environment variables")
 		am.region = cm.GetValueForKey(regionKey)
 		accessKeyId := cm.GetValueForKey(accessKeyIdKey)
 		secretAccessKey := cm.GetValueForKey(secretAccessKey)
 		if am.region == "" || accessKeyId == "" || secretAccessKey == "" {
-			logger.Log.Fatal().Msg("Missing AWS credentials. Please set AWS_REGION, AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables")
+			log.Fatalf("Missing AWS credentials. Please set AWS_REGION, AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables")
 		}
-		am.config = *&aws.Config{
+		am.config = aws.Config{
 			Region:      am.region,
 			Credentials: credentials.NewStaticCredentialsProvider(accessKeyId, secretAccessKey, ""),
 		}

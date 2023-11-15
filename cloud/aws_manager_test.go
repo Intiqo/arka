@@ -27,14 +27,14 @@ func (ts *AwsManagerTestSuite) SetupSuite() {
 	ts.clm = dm.Get(DependencyCloudManager).(Manager)
 }
 
-func (ts AwsManagerTestSuite) Test_awsCloudManager_GetConfig() {
+func (ts *AwsManagerTestSuite) Test_awsCloudManager_GetConfig() {
 	ts.Run("success", func() {
 		config := ts.clm.GetConfig()
 		assert.NotNil(ts.T(), config)
 	})
 }
 
-func (ts AwsManagerTestSuite) Test_awsCloudManager_GetRegion() {
+func (ts *AwsManagerTestSuite) Test_awsCloudManager_GetRegion() {
 	ts.Run("success", func() {
 		region := ts.clm.GetRegion()
 		assert.NotNil(ts.T(), region)
