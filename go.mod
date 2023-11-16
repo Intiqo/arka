@@ -16,7 +16,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.22.0
 	github.com/gabriel-vasile/mimetype v1.4.2
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-resty/resty/v2 v2.7.0
+	github.com/go-resty/resty/v2 v2.10.0
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/jackc/pgconn v1.14.1
 	github.com/jackc/pgx-gofrs-uuid v0.0.0-20230224015001-1d428863c2e2
