@@ -3,7 +3,6 @@ package cloud
 import (
 	"context"
 	"log"
-	"log/slog"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsCfg "github.com/aws/aws-sdk-go-v2/config"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/logger"
 )
 
 const regionKey = "AWS_REGION"
@@ -39,11 +39,11 @@ func (am *awsManager) initialize() {
 	var err error
 	// Try to load credentials from the specified aws profile
 	awsProfile := cm.GetValueForKey("AWS_PROFILE")
-	slog.Info("Loading AWS credentials from profile")
+	logger.Log.Info().Msg("Loading AWS credentials from profile")
 	am.config, err = awsCfg.LoadDefaultConfig(context.TODO(), awsCfg.WithSharedConfigProfile(awsProfile))
 	if err != nil {
 		// Fallback to loading credentials from environment variables
-		slog.Info("Loading AWS credentials from environment variables")
+		logger.Log.Info().Msg("Loading AWS credentials from environment variables")
 		am.region = cm.GetValueForKey(regionKey)
 		accessKeyId := cm.GetValueForKey(accessKeyIdKey)
 		secretAccessKey := cm.GetValueForKey(secretAccessKey)

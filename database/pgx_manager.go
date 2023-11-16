@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"log/slog"
 	"strconv"
 	"strings"
 
@@ -35,7 +34,7 @@ func (pdm *pgxDatabaseManager) GetInstance() *pgxpool.Pool {
 func (pdm pgxDatabaseManager) GetStatus() string {
 	err := pdm.db.Ping(context.Background())
 	if err != nil {
-		slog.Error("failed to ping database, connection may be down")
+		logger.Log.Error().Err(err).Msg("failed to ping database, connection may be down")
 		return constants.SystemStatusDown
 	}
 	return constants.SystemStatusUp
