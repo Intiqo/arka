@@ -34,7 +34,7 @@ func TestSnsEventManager(t *testing.T) {
 	suite.Run(t, new(SnsEventManagerTestSuite))
 }
 
-func (ts SnsEventManagerTestSuite) Test_snsEventManager_RegisterAndPublish() {
+func (ts *SnsEventManagerTestSuite) Test_snsEventManager_RegisterAndPublish() {
 	ts.Run("success", func() {
 		const eventName = "greet"
 		err := ts.evm.Register(eventName, nil)
