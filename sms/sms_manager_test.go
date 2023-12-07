@@ -1,6 +1,7 @@
 package sms
 
 import (
+	"github.com/adwitiyaio/arka/secrets"
 	"os"
 	"testing"
 
@@ -26,11 +27,12 @@ func (ts *SmsManagerTestSuite) SetupSuite() {
 	err := os.Setenv("CI", "true")
 	require.NoError(ts.T(), err)
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "../test.env")
 	Bootstrap(ProviderMulti)
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 
-func (ts SmsManagerTestSuite) Test_NormalizePhoneNumber() {
+func (ts *SmsManagerTestSuite) Test_NormalizePhoneNumber() {
 	ts.Run("success", func() {
 		const phone = "+61 450 780 453"
 		mob, cc := NormalizePhoneNumber(phone)
@@ -39,7 +41,7 @@ func (ts SmsManagerTestSuite) Test_NormalizePhoneNumber() {
 	})
 }
 
-func (ts SmsManagerTestSuite) Test_GetCharacterCountForMessage() {
+func (ts *SmsManagerTestSuite) Test_GetCharacterCountForMessage() {
 	ts.Run("success - non-unicode - single sms", func() {
 		const message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
 		count := GetCharacterCountForMessage(message)

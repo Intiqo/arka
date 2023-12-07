@@ -24,7 +24,7 @@ func (tm *multiSmsManager) initialize() {
 	tm.initializeSmsBroadcast()
 }
 
-func (tm multiSmsManager) SendSms(options Options) (interface{}, error) {
+func (tm *multiSmsManager) SendSms(options Options) (interface{}, error) {
 	const AUCode = "61"
 	// We segregate the AU recipients to send SMS via SMS Broadcast
 	auRecipients := segregateRecipients(options.Recipients, AUCode)

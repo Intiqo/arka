@@ -76,7 +76,7 @@ func (tm *multiSmsManager) initializeClickSend() {
 	}
 }
 
-func (tm multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, error) {
+func (tm *multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, error) {
 	// Create a series of messages based on the number of recipients
 	msgs := make([]clickSendMsg, 0)
 	for _, rec := range options.Recipients {
@@ -98,7 +98,7 @@ func (tm multiSmsManager) sendSmsViaClickSend(options Options) (interface{}, err
 	return nil, nil
 }
 
-func (tm multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) (interface{}, error) {
+func (tm *multiSmsManager) dispatchClickSend(reqBody clickSendSmsBody, url string) (interface{}, error) {
 	var response clickSendResponseBody
 	resp, err := tm.client.R().
 		SetHeader("Content-Type", "application/json").
