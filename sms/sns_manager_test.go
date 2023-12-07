@@ -32,7 +32,7 @@ func (ts *SnsManagerTestSuite) SetupSuite() {
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 
-func (ts SnsManagerTestSuite) Test_snsManager_SendSms() {
+func (ts *SnsManagerTestSuite) Test_snsManager_SendSms() {
 	ts.Run("success", func() {
 		options := Options{
 			Recipients: []string{"+91 9109101910", "+91 9209101920"},
