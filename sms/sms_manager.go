@@ -24,6 +24,7 @@ const unicodeMultiSmsCharacterCount = 66
 const ProviderMulti = "multi"
 const ProviderSns = "sns"
 const ProviderTermii = "termii"
+const ProviderBurstSms = "burstsms"
 
 // Options ... Various options to send an SMS.
 //
@@ -66,6 +67,11 @@ func Bootstrap(provider string) {
 			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
 		}
 		smsManager.(*termiiManager).initialize()
+	case ProviderBurstSms:
+		smsManager = &BurstSmsManager{
+			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
+		}
+		smsManager.(*BurstSmsManager).initialize()
 	default:
 		err := errors.New("sms provider unknown")
 		logger.Log.Fatal().Err(err).Str("provider", provider)

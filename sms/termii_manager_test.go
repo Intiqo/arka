@@ -32,7 +32,7 @@ func (ts *TermiiManagerTestSuite) SetupSuite() {
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 
-func (ts TermiiManagerTestSuite) Test_termiiManager_SendSms() {
+func (ts *TermiiManagerTestSuite) Test_termiiManager_SendSms() {
 	ts.Run(
 		"success", func() {
 			options := Options{
