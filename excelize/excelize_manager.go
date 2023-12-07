@@ -9,7 +9,7 @@ const DependencyExcelizeManager = "excelize_manager"
 
 type Manager interface {
 	// NewFile ... Creates a new excelize file
-	NewFile() func() *excelize.File
+	NewFile(opts excelize.Options) *excelize.File
 }
 
 type Excelize struct {
@@ -22,6 +22,6 @@ func Bootstrap() {
 	d.Register(DependencyExcelizeManager, e)
 }
 
-func (c *Excelize) NewFile() func() *excelize.File {
-	return excelize.NewFile
+func (c *Excelize) NewFile(opts excelize.Options) *excelize.File {
+	return excelize.NewFile(opts)
 }
