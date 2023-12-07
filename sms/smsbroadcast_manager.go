@@ -31,7 +31,7 @@ func (tm *multiSmsManager) initializeSmsBroadcast() {
 	}
 }
 
-func (tm multiSmsManager) sendSmsViaSmsBroadcast(options Options) (interface{}, error) {
+func (tm *multiSmsManager) sendSmsViaSmsBroadcast(options Options) (interface{}, error) {
 	// Create a series of messages based on the number of recipients
 	space := regexp.MustCompile(`\s+`)
 	to := ""
@@ -50,7 +50,7 @@ func (tm multiSmsManager) sendSmsViaSmsBroadcast(options Options) (interface{}, 
 	return nil, nil
 }
 
-func (tm multiSmsManager) dispatchSmsBroadcast(options Options, to string, url string) (interface{}, error) {
+func (tm *multiSmsManager) dispatchSmsBroadcast(options Options, to string, url string) (interface{}, error) {
 	resp, err := tm.client.R().
 		SetQueryParams(
 			map[string]string{
