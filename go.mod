@@ -22,7 +22,7 @@ require (
 	github.com/jackc/pgx-gofrs-uuid v0.0.0-20230224015001-1d428863c2e2
 	github.com/jackc/pgx/v5 v5.5.0
 	github.com/joho/godotenv v1.5.1
-	github.com/mailgun/mailgun-go/v4 v4.11.0
+	github.com/mailgun/mailgun-go/v4 v4.12.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nyaruka/phonenumbers v1.2.2
 	github.com/robfig/cron/v3 v3.0.1
