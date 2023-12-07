@@ -24,7 +24,7 @@ const unicodeMultiSmsCharacterCount = 66
 const ProviderMulti = "multi"
 const ProviderSns = "sns"
 const ProviderTermii = "termii"
-const ProviderBurstSms = "burstsms"
+const ProviderBurstSms = "burst_sms"
 
 // Options ... Various options to send an SMS.
 //
