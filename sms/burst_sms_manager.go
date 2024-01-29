@@ -2,13 +2,15 @@ package sms
 
 import (
 	"fmt"
-	"github.com/adwitiyaio/arka/secrets"
-	"github.com/go-resty/resty/v2"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/go-resty/resty/v2"
+
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 const (
@@ -16,20 +18,20 @@ const (
 	BurstSmsSecretKey = "BURST_SMS_API_SECRET_KEY"
 )
 
-type BurstSmsManager struct {
+type burstSmsManager struct {
 	sm        secrets.Manager
 	client    *resty.Client
 	apiKey    string
 	apiSecret string
 }
 
-func (bs *BurstSmsManager) initialize() {
+func (bs *burstSmsManager) initialize() {
 	bs.client = resty.New()
 	bs.apiKey = bs.sm.GetValueForKey(BurstSmsApikey)
 	bs.apiSecret = bs.sm.GetValueForKey(BurstSmsSecretKey)
 }
 
-func (bs *BurstSmsManager) SendSms(options Options) (interface{}, error) {
+func (bs *burstSmsManager) SendSms(options Options) (interface{}, error) {
 	requestUrl := "https://api.transmitsms.com/send-sms.json"
 	method := "POST"
 
@@ -54,7 +56,7 @@ func (bs *BurstSmsManager) SendSms(options Options) (interface{}, error) {
 	return nil, nil
 }
 
-func (bs *BurstSmsManager) dispatch(req *http.Request) (interface{}, error) {
+func (bs *burstSmsManager) dispatch(req *http.Request) (interface{}, error) {
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
@@ -73,6 +75,5 @@ func (bs *BurstSmsManager) dispatch(req *http.Request) (interface{}, error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Println(string(body))
-	return nil, err
+	return string(body), err
 }

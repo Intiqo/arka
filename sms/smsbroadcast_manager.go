@@ -42,7 +42,7 @@ func (tm *multiSmsManager) sendSmsViaSmsBroadcast(options Options) (interface{},
 	}
 	to = to[1:]
 
-	// Create a HTTP request and call the API
+	// Create an HTTP request and call the API
 	url := fmt.Sprintf("%s%s", tm.sbc.baseUrl, tm.sbc.sendSmsPath)
 	if os.Getenv("CI") != "true" {
 		return tm.dispatchSmsBroadcast(options, to, url)

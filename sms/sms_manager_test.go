@@ -1,9 +1,11 @@
 package sms
 
 import (
-	"github.com/adwitiyaio/arka/secrets"
 	"os"
 	"testing"
+
+	"github.com/adwitiyaio/arka/cloud"
+	"github.com/adwitiyaio/arka/secrets"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -28,7 +30,8 @@ func (ts *SmsManagerTestSuite) SetupSuite() {
 	require.NoError(ts.T(), err)
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
 	secrets.Bootstrap(secrets.ProviderEnvironment, "../test.env")
-	Bootstrap(ProviderMulti)
+	cloud.Bootstrap(cloud.ProviderAws)
+	Bootstrap()
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 

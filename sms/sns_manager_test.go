@@ -11,6 +11,7 @@ import (
 	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
+	"github.com/adwitiyaio/arka/secrets"
 )
 
 type SnsManagerTestSuite struct {
@@ -26,15 +27,17 @@ func TestSnsManager(t *testing.T) {
 func (ts *SnsManagerTestSuite) SetupSuite() {
 	err := os.Setenv("CI", "true")
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
+	secrets.Bootstrap(secrets.ProviderEnvironment, "../test.env")
 	cloud.Bootstrap(cloud.ProviderAws)
 	require.NoError(ts.T(), err)
-	Bootstrap(ProviderSns)
+	Bootstrap()
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 
 func (ts *SnsManagerTestSuite) Test_snsManager_SendSms() {
 	ts.Run("success", func() {
 		options := Options{
+			Provider:   ProviderSns,
 			Recipients: []string{"+91 9109101910", "+91 9209101920"},
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}

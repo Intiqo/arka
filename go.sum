@@ -53,8 +53,6 @@ github.com/MicahParks/keyfunc v1.9.0 h1:lhKd5xrFHLNOWrDc4Tyb/Q1AJ4LCzQ48GVJyVIID
 github.com/MicahParks/keyfunc v1.9.0/go.mod h1:IdnCilugA0O/99dW+/MkvlyrsX8+L8+x95xuVNtM5jw=
 github.com/OneSignal/onesignal-go-api v1.0.4 h1:qSfVA5BMVEM92CSO6oeiQHPjxT1URcFpTGTMH8r8qLg=
 github.com/OneSignal/onesignal-go-api v1.0.4/go.mod h1:DtIjUAJD9iw/clqpJ7mGff1soWkgbs/2m7Or85W/I7c=
-github.com/Uchencho/go-termii v1.0.4 h1:N8jH7gZpSEy0mzxm1b44i8+CRhHPlOQLAwlauR6juIk=
-github.com/Uchencho/go-termii v1.0.4/go.mod h1:zyaPjb/BV0FTan6z+Imw/jL/yIorXZKnKqzY4pTNDDY=
 github.com/aws/aws-sdk-go-v2 v1.23.5 h1:xK6C4udTyDMd82RFvNkDQxtAd00xlzFUtX4fF2nMZyg=
 github.com/aws/aws-sdk-go-v2 v1.23.5/go.mod h1:t3szzKfP0NeRU27uBFczDivYJjsmSnqI8kIvKyWb9ds=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.5.3 h1:Zx9+31KyB8wQna6SXFWOewlgoY5uGdDAu6PTOEU3OQI=

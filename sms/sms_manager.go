@@ -1,17 +1,13 @@
 package sms
 
 import (
-	"errors"
 	"fmt"
 	"math"
 	"unicode/utf8"
 
 	"github.com/nyaruka/phonenumbers"
 
-	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/dependency"
-	"github.com/adwitiyaio/arka/logger"
-	"github.com/adwitiyaio/arka/secrets"
 )
 
 const DependencySmsManager = "sms_manager"
@@ -23,10 +19,13 @@ const unicodeMultiSmsCharacterCount = 66
 
 const ProviderMulti = "multi"
 const ProviderSns = "sns"
-const ProviderTermii = "termii"
 const ProviderBurstSms = "burst_sms"
 
 // Options ... Various options to send an SMS.
+// Provider is the SMS provider to use. See Provider* constants
+// ProviderMulti is configured to use SMS Broadcast & ClickSend
+// ProviderSns is configured to use AWS SNS
+// ProviderBurstSms is configured to use Burst SMS
 //
 // Recipients is a string array. Recipient should contain the country code as well.
 // For example, "+919191092920".
@@ -35,6 +34,7 @@ const ProviderBurstSms = "burst_sms"
 // A Message can be greater than 160 characters, in which case, the SMS will be split
 // into multiple messages
 type Options struct {
+	Provider   string
 	Recipients []string
 	Message    string
 }
@@ -48,34 +48,10 @@ type Manager interface {
 }
 
 // Bootstrap ... Bootstraps the SMS Manager
-func Bootstrap(provider string) {
+func Bootstrap() {
 	dm := dependency.GetManager()
-	var smsManager interface{}
-	switch provider {
-	case ProviderMulti:
-		smsManager = &multiSmsManager{
-			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
-		}
-		smsManager.(*multiSmsManager).initialize()
-	case ProviderSns:
-		smsManager = &snsManager{
-			clm: dm.Get(cloud.DependencyCloudManager).(cloud.Manager),
-		}
-		smsManager.(*snsManager).initialize()
-	case ProviderTermii:
-		smsManager = &termiiManager{
-			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
-		}
-		smsManager.(*termiiManager).initialize()
-	case ProviderBurstSms:
-		smsManager = &BurstSmsManager{
-			sm: dm.Get(secrets.DependencySecretsManager).(secrets.Manager),
-		}
-		smsManager.(*BurstSmsManager).initialize()
-	default:
-		err := errors.New("sms provider unknown")
-		logger.Log.Fatal().Err(err).Str("provider", provider)
-	}
+	smsManager := &dynamicSmsManager{}
+	smsManager.initialize()
 	dm.Register(DependencySmsManager, smsManager)
 }
 

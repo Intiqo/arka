@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
+	"github.com/adwitiyaio/arka/cloud"
 	"github.com/adwitiyaio/arka/config"
 	"github.com/adwitiyaio/arka/dependency"
 	"github.com/adwitiyaio/arka/secrets"
@@ -26,15 +27,17 @@ func TestMultiSmsManager(t *testing.T) {
 func (ts *MultiSmsManagerTestSuite) SetupSuite() {
 	config.Bootstrap(config.ProviderEnvironment, "../test.env")
 	secrets.Bootstrap(secrets.ProviderEnvironment, "")
+	cloud.Bootstrap(cloud.ProviderAws)
 	err := os.Setenv("CI", "true")
 	require.NoError(ts.T(), err)
-	Bootstrap(ProviderMulti)
+	Bootstrap()
 	ts.m = dependency.GetManager().Get(DependencySmsManager).(Manager)
 }
 
 func (ts *MultiSmsManagerTestSuite) Test_multiSmsManager_SendSms() {
-	ts.Run("success - clicksend", func() {
+	ts.Run("success - click send", func() {
 		options := Options{
+			Provider:   ProviderMulti,
 			Recipients: []string{"+91 9109101910", "+91 9209101920"},
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}
@@ -46,6 +49,7 @@ func (ts *MultiSmsManagerTestSuite) Test_multiSmsManager_SendSms() {
 
 	ts.Run("success - smsbroadcast", func() {
 		options := Options{
+			Provider:   ProviderMulti,
 			Recipients: []string{"+61 450 780 453", "+61 418 559 764"},
 			Message:    "You mustn't be afraid to dream a little bigger darling!",
 		}
